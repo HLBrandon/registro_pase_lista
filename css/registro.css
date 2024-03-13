@@ -1,0 +1,17 @@
+body,
+html {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: rgba(221, 225, 230, 0.705);
+}
+
+.form-container {
+  width: 100%;
+  max-width: 600px;
+  border: 2px solid rgba(255, 255, 255, 0.5); /* Color del borde con transparencia */
+  border-radius: 4px;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(64, 82, 184, 0.1); /* Iluminación en el borde */
+}

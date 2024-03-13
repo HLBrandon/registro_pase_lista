@@ -1,0 +1,18 @@
+body{
+    background-color: rgba(221, 225, 230, 0.705);
+}
+
+.iniciar{
+ background: #17078f;
+  color: #FFF;
+  border: 2px solid #FFF;
+  border-radius: 0px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.iniciar:hover{
+    border:2px solid #17078f;
+    color: #17078f;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
