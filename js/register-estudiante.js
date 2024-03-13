@@ -1,6 +1,8 @@
 
 $(document).ready(function () {
 
+
+    //Inicializar funciones
     listarSemestre();
 
     function listarSemestre() {
@@ -8,6 +10,9 @@ $(document).ready(function () {
             type: "GET",
             url: "../../../php/listar_semestres.php",
             success: function (response) {
+
+                console.log(response); //verifica que lleguen datos en la terminal del navegador
+
                 if (!response.error) {
                     let semestre = JSON.parse(response);
                     let datos = `<option selected value="">Selecciona un semestre</option>`;
@@ -19,6 +24,7 @@ $(document).ready(function () {
             }
         });
     }
+
 });
 
 //utf8_spanish_ci

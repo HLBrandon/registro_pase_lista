@@ -9,7 +9,7 @@ include '../../../config/global.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro personal</title>
+    <title>Registrar Estudiantes</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
 </head>
@@ -51,17 +51,13 @@ include '../../../config/global.php';
                 <div class="col-md-6">
                     <label class="form-label" for="select__modalidad">Modalidad</label>
                     <select class="form-select" name="select__modalidad" id="select__modalidad">
-                        <option selected value="">Selecciona un Modalidad</option>
-                        <option value="1">Escolarizado</option>
-                        <option value="2">Mixto</option>
+                        
                     </select>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label" for="select__carrera">Carrera</label>
                     <select class="form-select" name="select__carrera" id="select__carrera">
-                        <option selected value="">Selecciona una carrera</option>
-                        <option value="1">Escolarizado</option>
-                        <option value="2">Mixto</option>
+                        
                     </select>
                 </div>
                 <!--
@@ -90,9 +86,10 @@ include '../../../config/global.php';
             </div>
         </div>
     </div>
+    
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="<?= $ruta_raiz ?>2/js/register-estudiante.js"></script>
+    <script src="<?= $ruta_raiz ?>/js/register-estudiante.js"></script>
 </body>
 
 </html>
