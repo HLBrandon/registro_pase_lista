@@ -2,7 +2,7 @@
 
 include 'conexion.php';
 
-$sql = "SELECT cveSemestre FROM semestre";
+$sql = "SELECT * FROM semestre";
 
 $query = $conexion -> query($sql);
 
@@ -14,7 +14,8 @@ $arreglo = array();
 
 while ($row = $query -> fetch_object()) {
     $arreglo [] = array(
-        "cveSemestre" => $row -> cveSemestre
+        "cveSemestre" => $row -> cveSemestre,
+        "num_semestre"=>$row->num_semestre
     );
 }
 
