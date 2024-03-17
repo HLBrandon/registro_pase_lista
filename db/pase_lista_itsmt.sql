@@ -61,7 +61,7 @@ CREATE TABLE area_itsmt (
 
 CREATE TABLE info_personal (
 	cveInfoPersonal INT (10) NOT NULL AUTO_INCREMENT,
-    correo VARCHAR (50) NOT NULL,
+    correo VARCHAR (100) NOT NULL,
     contra VARCHAR (100) NOT NULL,
     PRIMARY KEY (cveInfoPersonal)
 ) ENGINE = InnoDB;
@@ -173,6 +173,152 @@ CREATE TABLE personal_escolar (
     foreign key (cveEstudiante) references estudiante (cvePersona) on update cascade on delete cascade,
     foreign key (cvePresente) references asis_presente (cvePresente) on update cascade on delete cascade
  ) engine = InnoDB;
+ 
+ -- ---------------------------------------------------------------------------------
+ -- ---------------------------------------------------------------------------------
+ 
+ -- -------------------------------------- --
+ -- CREACION DE PROCEDIMIENTOS ALMACENADOS  --
+ -- -------------------------------------- --
+ 
+ 
+ # PROCEDIMINETO registrar_admin
+ drop procedure if exists registrar_admin;
+ DELIMITER $$
+ create procedure registrar_admin ( IN d_correo varchar(100), d_clave varchar (100), 
+	d_nombre varchar (40), d_pa varchar (40), d_ma varchar (40), d_tel varchar (10) )
+ begin
+	declare exit handler for sqlexception
+    begin
+		rollback;
+    end;
+    
+    start transaction;
+		set autocommit = 0;
+        
+		insert into info_personal (correo, contra) values (d_correo, d_clave);
+			set @id_info = last_insert_id();
+        insert into usuario (nombre_persona, apellido_pa, apellido_ma, telefono) values (d_nombre, d_pa, d_ma, d_tel);
+			set @id_user = last_insert_id();
+        insert into personal_escolar (cvePersona, cveInfoPersonal) values (@id_user, @id_info);
+			set @id_personal = last_insert_id();
+        insert into user_admin (cvePersona) values (@id_personal);
+        
+        commit;
+ end $$
+ DELIMITER ;
+  # FIN PROCEDIMINETO registrar_admin
+  
+  -- ----------------------------------------------------------------------------------
+  
+ # PROCEDIMINETO registrar_jefeCarrera
+ drop procedure if exists registrar_jefeCarrera;
+ DELIMITER $$
+ create procedure registrar_jefeCarrera ( IN d_correo varchar(100), d_clave varchar (100), 
+	d_nombre varchar (40), d_pa varchar (40), d_ma varchar (40), d_tel varchar (10) )
+ begin
+	declare exit handler for sqlexception
+    begin
+		rollback;
+    end;
+    
+    start transaction;
+		set autocommit = 0;
+        
+		insert into info_personal (correo, contra) values (d_correo, d_clave);
+			set @id_info = last_insert_id();
+        insert into usuario (nombre_persona, apellido_pa, apellido_ma, telefono) values (d_nombre, d_pa, d_ma, d_tel);
+			set @id_user = last_insert_id();
+        insert into personal_escolar (cvePersona, cveInfoPersonal) values (@id_user, @id_info);
+			set @id_personal = last_insert_id();
+        insert into jefe_carrera (cvePersona) values (@id_personal);
+        
+        commit;
+ end $$
+ DELIMITER ;
+  # FIN PROCEDIMINETO registrar_jefeCarrera
+  
+  -- ----------------------------------------------------------------------------------
+  
+ # PROCEDIMINETO registrar_personalOficiona
+ drop procedure if exists registrar_personalOficina;
+ DELIMITER $$
+ create procedure registrar_personalOficina ( IN d_correo varchar(100), d_clave varchar (100), 
+	d_nombre varchar (40), d_pa varchar (40), d_ma varchar (40), d_tel varchar (10), d_area int )
+ begin
+	declare exit handler for sqlexception
+    begin
+		rollback;
+    end;
+    
+    start transaction;
+		set autocommit = 0;
+        
+		insert into info_personal (correo, contra) values (d_correo, d_clave);
+			set @id_info = last_insert_id();
+        insert into usuario (nombre_persona, apellido_pa, apellido_ma, telefono) values (d_nombre, d_pa, d_ma, d_tel);
+			set @id_user = last_insert_id();
+        insert into personal_escolar (cvePersona, cveInfoPersonal) values (@id_user, @id_info);
+			set @id_personal = last_insert_id();
+        insert into personal_oficina (cvePersona, cveArea) values (@id_personal, d_area);
+        
+        commit;
+ end $$
+ DELIMITER ;
+  # FIN PROCEDIMINETO registrar_personalOficina
+  
+  -- ----------------------------------------------------------------------------------
+  
+ # PROCEDIMINETO registrar_profesor
+ drop procedure if exists registrar_profesor;
+ DELIMITER $$
+ create procedure registrar_profesor ( IN d_correo varchar(100), d_clave varchar (100), 
+	d_nombre varchar (40), d_pa varchar (40), d_ma varchar (40), d_tel varchar (10) )
+ begin
+	declare exit handler for sqlexception
+    begin
+		rollback;
+    end;
+    
+    start transaction;
+		set autocommit = 0;
+        
+		insert into info_personal (correo, contra) values (d_correo, d_clave);
+			set @id_info = last_insert_id();
+        insert into usuario (nombre_persona, apellido_pa, apellido_ma, telefono) values (d_nombre, d_pa, d_ma, d_tel);
+			set @id_user = last_insert_id();
+        insert into personal_escolar (cvePersona, cveInfoPersonal) values (@id_user, @id_info);
+			set @id_personal = last_insert_id();
+        insert into profesor (cvePersona) values (@id_personal);
+        
+        commit;
+ end $$
+ DELIMITER ;
+  # FIN PROCEDIMINETO registrar_profesor
+  
+  -- ----------------------------------------------------------------------------------
+  
+ # PROCEDIMINETO tomar_asistencia
+ drop procedure if exists tomar_asistencia;
+ DELIMITER $$
+ create procedure tomar_asistencia ( IN d_Profesor INT, d_Clase INT, d_Estudiante INT, d_Presente INT )
+ begin
+	declare exit handler for sqlexception
+    begin
+		rollback;
+    end;
+    
+    start transaction;
+		set autocommit = 0;
+        
+		insert into asistencia (cveProfesor, cveClase, fecha_asistencia) values (d_Profesor, d_Clase, NOW());
+			set @id_asistencia = last_insert_id();
+		insert into detalle_asistencia (cveAsistencia, cveEstudiante, cvePresente) values (@id_asistencia, d_Estudiante, d_Presente);
+        
+        commit;
+ end $$
+ DELIMITER ;
+  # FIN PROCEDIMINETO tomar_asistencia
  
  -- ---------------------------------------------------------------------------------
  -- ---------------------------------------------------------------------------------
