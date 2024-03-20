@@ -19,6 +19,6 @@ while ($row = $query -> fetch_object()) {
     );
 }
 
-$json = json_encode($arreglo);
+$json = json_encode($arreglo, JSON_UNESCAPED_UNICODE);
 
 print_r($json);

@@ -11,8 +11,8 @@ drop table if exists asistencia;
 drop table if exists impartir_clase;
 drop table if exists clase;
 drop table if exists estudiante;
-drop table if exists carrera;
 drop table if exists profesor;
+drop table if exists encargar_carrera;
 drop table if exists jefe_carrera;
 drop table if exists user_admin;
 drop table if exists personal_oficina;
@@ -22,6 +22,7 @@ drop table if exists info_personal;
 drop table if exists area_itsmt;
 drop table if exists asignatura;
 drop table if exists asis_presente;
+drop table if exists carrera;
 drop table if exists modalidad;
 drop table if exists semestre;
 
@@ -40,6 +41,12 @@ CREATE TABLE modalidad (
     modalidad VARCHAR (30) NOT NULL,
     PRIMARY KEY (cveModalidad)
 ) ENGINE = InnoDB;
+
+create table carrera (
+	cveCarrera VARCHAR (10) NOT NULL,
+    nombre_carrera VARCHAR (100) NOT NULL,
+    primary key (cveCarrera)
+)engine = InnoDB;
 
 CREATE TABLE asis_presente (
 	cvePresente INT (10) NOT NULL AUTO_INCREMENT,
@@ -108,30 +115,30 @@ CREATE TABLE personal_escolar (
     foreign key (cvePersona) references personal_escolar (cvePersona) on update cascade on delete cascade
  )engine = InnoDB;
  
+ create table encargar_carrera (
+	cveCarrera varchar (10) not null,
+    cvePersona int (10) not null,
+    primary key (cveCarrera, cvePersona),
+    foreign key (cveCarrera) references carrera(cveCarrera) on update cascade on delete cascade,
+    foreign key (cvePersona) references jefe_carrera (cvePersona) on update cascade on delete cascade
+ ) engine = InnoDB;
+ 
   create table profesor (
 	cvePersona INT (10) NOT NULL,
     primary key (cvePersona),
     foreign key (cvePersona) references personal_escolar (cvePersona) on update cascade on delete cascade
  )engine = InnoDB;
  
- create table carrera (
-	cveCarrera INT (10) NOT NULL auto_increment,
-    nombre_carrera VARCHAR (30) NOT NULL,
-    siglas_carrera varchar (10) not null,
-    cvePersona int (10) not null,
-    primary key (cveCarrera),
-    foreign key (cvePersona) references jefe_carrera (cvePersona) on update cascade on delete cascade
- )engine = InnoDB;
- 
  -- TODO LO RELACIONADO CON LOS ESTUDIANTES
  
  create table estudiante (
+	matricula VARCHAR (8) not null,
 	cvePersona INT (10) not null,
     cveSemestre int (10) not null,
     cveModalidad int (10) not null,
-    cveCarrera int (10) not null,
+    cveCarrera VARCHAR (10) not null,
     fecha_ingreso date,
-    primary key (cvePersona),
+    primary key (matricula),
     foreign key (cvePersona) references usuario (cvePersona) on update cascade on delete cascade,
     foreign key (cveSemestre) references semestre (cveSemestre) on update cascade on delete cascade,
     foreign key (cveCarrera) references carrera (cveCarrera) on update cascade on delete cascade
@@ -140,7 +147,7 @@ CREATE TABLE personal_escolar (
  create table clase (
 	cveClase int (10) not null auto_increment,
     cveAsignatura int (10) not null,
-    cveCarrera int (10) not null,
+    cveCarrera VARCHAR (10) not null,
     primary key (cveClase),
     foreign key (cveAsignatura) references asignatura (cveAsignatura) on update cascade on delete cascade,
     foreign key (cveCarrera) references carrera (cveCarrera) on update cascade on delete cascade
@@ -166,11 +173,11 @@ CREATE TABLE personal_escolar (
  
  create table detalle_asistencia (
 	cveAsistencia INT (10) NOT NULL,
-    cveEstudiante INT (10) NOT NULL,
+    matricula varchar (8) NOT NULL,
     cvePresente INT (10) NOT NULL,
-    primary key (cveAsistencia, cveEstudiante),
+    primary key (cveAsistencia, matricula),
     foreign key (cveAsistencia) references asistencia (cveAsistencia) on update cascade on delete cascade,
-    foreign key (cveEstudiante) references estudiante (cvePersona) on update cascade on delete cascade,
+    foreign key (matricula) references estudiante (matricula) on update cascade on delete cascade,
     foreign key (cvePresente) references asis_presente (cvePresente) on update cascade on delete cascade
  ) engine = InnoDB;
  
@@ -319,6 +326,32 @@ CREATE TABLE personal_escolar (
  end $$
  DELIMITER ;
   # FIN PROCEDIMINETO tomar_asistencia
+  
+ -- ----------------------------------------------------------------------------------
+  
+ # PROCEDIMINETO registrar_estudiante
+ drop procedure if exists registrar_estudiante;
+ DELIMITER $$
+ create procedure registrar_estudiante ( IN d_nombre varchar (40), d_pa varchar (40), d_ma varchar (40), d_tel varchar (10),
+	d_matricula varchar (8), d_semestre int, d_modalidad int, d_carrera varchar (10), d_fecha date )
+ begin
+	declare exit handler for sqlexception
+    begin
+		rollback;
+    end;
+    
+    start transaction;
+		set autocommit = 0;
+        
+        insert into usuario (nombre_persona, apellido_pa, apellido_ma, telefono) values (d_nombre, d_pa, d_ma, d_tel);
+			set @id_user = last_insert_id();
+        insert into estudiante (matricula, cvePersona, cveSemestre, cveModalidad, cveCarrera, fecha_ingreso) 
+			values (d_matricula, @id_user, d_semestre, d_modalidad, d_carrera, d_fecha);
+        
+        commit;
+ end $$
+ DELIMITER ;
+  # FIN PROCEDIMINETO registrar_estudiante
  
  -- ---------------------------------------------------------------------------------
  -- ---------------------------------------------------------------------------------
@@ -345,6 +378,16 @@ CREATE TABLE personal_escolar (
  insert into modalidad (modalidad) values 
  ('Escolarizado'),
  ('Mixto');
+ 
+-- ----------------------------------------------
+ 
+ -- DATOS DE LAS CARRERAS
+ insert into carrera (cveCarrera, nombre_carrera) values 
+ ('IIA', 'Ingeniería en Industrial Alimentarias'),
+ ('IGE', 'Ingeniería en Gestión Empresarial'),
+ ('ISC', 'Ingeniería en Sistemas Computacionales'),
+ ('IA', 'Ingeniería en Gestión Empresarial'),
+ ('IMT', 'Ingeniería en Mecatrónica');
  
   -- ----------------------------------------------
  

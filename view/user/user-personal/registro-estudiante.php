@@ -27,54 +27,51 @@ include '../../../config/global.php';
 
                 <div class="col-md-6">
                     <label for="nombre_usuario" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" id="nombre_usuario" placeholder="Nombre" required>
+                    <input type="text" class="form-control border-3" id="nombre_usuario" placeholder="Nombre" required>
+                    <span id="alert_nombre" class=""></span>
                 </div>
                 <div class="col-md-6">
                     <label for="apellido_pa" class="form-label">Apellido Paterno</label>
-                    <input type="text" class="form-control" id="apellido_pa" placeholder="Paterno" required>
+                    <input type="text" class="form-control border-3" id="apellido_pa" placeholder="Paterno" required>
+                    <span id="alerta_paterno"></span>
                 </div>
                 <div class="col-md-6">
                     <label for="apellido_ma" class="form-label">Apellido Materno</label>
-                    <input type="text" class="form-control" id="apellido_ma" placeholder="Materno" required>
+                    <input type="text" class="form-control border-3" id="apellido_ma" placeholder="Materno" required>
+                    <span id="alerta_materno"></span>
                 </div>
                 <div class="col-md-6">
                     <label for="telefono" class="form-label">No. Telefono</label>
-                    <input type="text" class="form-control" id="telefono" placeholder="Telefono" required>
+                    <input type="text" class="form-control border-3" id="telefono" placeholder="Telefono" required>
+                    <span id="alerta_telefono"></span>
                 </div>
                 <div class="col-md-6">
-                    <label class="form-label" for="select__semestre">Semestre</label>
-                    <select class="form-select" name="select__semestre" id="select__semestre">
-                       
-                     
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label" for="select__modalidad">Modalidad</label>
-                    <select class="form-select" name="select__modalidad" id="select__modalidad">
-                        
-                    </select>
+                    <label for="matricula" class="form-label">Matricula</label>
+                    <input type="text" class="form-control border-3" id="matricula" placeholder="matricula" required>
+                    <span id="alerta_matricula"></span>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label" for="select__carrera">Carrera</label>
-                    <select class="form-select" name="select__carrera" id="select__carrera">
+                    <select class="form-select border-3" name="select__carrera" id="select__carrera">
                         
                     </select>
-                </div>
-                <!--
-                <div class="col-md-6">
-                    <label for="correo_usuario" class="form-label">Correo Electronico</label>
-                    <div class="input-group">
-                        <span class="input-group-text" id="inputGroupPrepend2">@</span>
-                        <input type="text" class="form-control" id="correo_usuario" placeholder="@email.com" required>
-                    </div>
+                    <span id="alerta_carrera"></span>
                 </div>
                 <div class="col-md-6">
-                    <label for="contra_usuario" class="form-label">Contraseña</label>
-                    <input type="password" class="form-control" id="contra_usuario" placeholder="Contraseña" required>
-                </div> -->
-
+                    <label class="form-label" for="select__grupo">Grupo</label>
+                    <select class="form-select border-3" name="select__grupo" id="select__grupo">
+                        
+                    </select>
+                    <span id="alerta_grupo"></span>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label" for="fecha__ingreso">Fecha de ingreso</label>
+                    <input type="text" class="form-control border-3" id="fecha__ingreso" name="fecha__ingreso" placeholder="AAAA-mm-dd" required>
+                    <span id="alerta_fecha"></span>
+                </div>
+                
                 <div class="col-12 text-center">
-                    <button class="btn btn-primary fw-bolder" type="submit">Guardar</button>
+                    <button disabled class="btn btn-primary fw-bolder" type="submit" id="btnGuardar" name="btnGuardar">Guardar</button>
                     <a class="btn btn-secondary fw-bold" href="<?= $ruta_raiz ?>/view/user/index.php">Cancelar</a>
                 </div>
 
