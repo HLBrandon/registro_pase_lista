@@ -8,9 +8,12 @@ USE pase_lista_itsmt;
 
 drop table if exists detalle_asistencia;
 drop table if exists asistencia;
+drop table if exists asignatura_clase;
+drop table if exists asignatura;
 drop table if exists impartir_clase;
 drop table if exists clase;
 drop table if exists estudiante;
+drop table if exists grupo;
 drop table if exists profesor;
 drop table if exists encargar_carrera;
 drop table if exists jefe_carrera;
@@ -20,7 +23,6 @@ drop table if exists personal_escolar;
 drop table if exists usuario;
 drop table if exists info_personal;
 drop table if exists area_itsmt;
-drop table if exists asignatura;
 drop table if exists asis_presente;
 drop table if exists carrera;
 drop table if exists modalidad;
@@ -28,7 +30,7 @@ drop table if exists semestre;
 
 -- --------------------------------------------------------------------
 
--- TABLAS SECUNDARIAS QUE NO TIENEN LLAVE FORANEA
+-- TABLAS QUE NO TIENEN LLAVE FORANEA
 
 CREATE TABLE semestre (
 	cveSemestre INT (10) NOT NULL AUTO_INCREMENT,
@@ -37,7 +39,7 @@ CREATE TABLE semestre (
 ) ENGINE = InnoDB;
 
 CREATE TABLE modalidad (
-	cveModalidad INT (10) NOT NULL AUTO_INCREMENT,
+	cveModalidad char (1) not null,
     modalidad VARCHAR (30) NOT NULL,
     PRIMARY KEY (cveModalidad)
 ) ENGINE = InnoDB;
@@ -54,12 +56,6 @@ CREATE TABLE asis_presente (
     PRIMARY KEY (cvePresente)
 ) ENGINE = InnoDB;
 
-CREATE TABLE asignatura (
-	cveAsignatura INT (10) NOT NULL AUTO_INCREMENT,
-    asignatura VARCHAR (40) NOT NULL,
-    PRIMARY KEY (cveAsignatura)
-) ENGINE = InnoDB;
-
 CREATE TABLE area_itsmt (
 	cveArea INT (10) NOT NULL AUTO_INCREMENT,
     area VARCHAR (40) NOT NULL,
@@ -73,8 +69,6 @@ CREATE TABLE info_personal (
     PRIMARY KEY (cveInfoPersonal)
 ) ENGINE = InnoDB;
 
--- CREANDO LA TABLA USUARIOS
-
 CREATE TABLE usuario (
 	cvePersona INT (10) NOT NULL AUTO_INCREMENT,
     nombre_persona VARCHAR (40) NOT NULL,
@@ -87,7 +81,7 @@ CREATE TABLE usuario (
 -- ----------------------------------------------------------------------
 -- CREANDO TABLAS QUE TIENEN LLAVE FORANEA
 
-CREATE TABLE personal_escolar (
+ CREATE TABLE personal_escolar (
 	cvePersona INT (10) NOT NULL,
     cveInfoPersonal INT (10) NOT NULL,
     PRIMARY KEY (cvePersona),
@@ -131,25 +125,33 @@ CREATE TABLE personal_escolar (
  
  -- TODO LO RELACIONADO CON LOS ESTUDIANTES
  
+ create table grupo (
+	cveGrupo int (10) not null auto_increment,
+    cveSemestre int (10) not null,
+    cveModalidad char (1) not null,
+    primary key (cveGrupo),
+    foreign key (cveSemestre) references semestre (cveSemestre) on update cascade on delete cascade,
+    foreign key (cveModalidad) references modalidad (cveModalidad) on update cascade on delete cascade
+ );
+ 
  create table estudiante (
 	matricula VARCHAR (8) not null,
 	cvePersona INT (10) not null,
-    cveSemestre int (10) not null,
-    cveModalidad int (10) not null,
+    cveGrupo INT (10) not null,
     cveCarrera VARCHAR (10) not null,
     fecha_ingreso date,
     primary key (matricula),
     foreign key (cvePersona) references usuario (cvePersona) on update cascade on delete cascade,
-    foreign key (cveSemestre) references semestre (cveSemestre) on update cascade on delete cascade,
+    foreign key (cveGrupo) references grupo (cveGrupo) on update cascade on delete cascade,
     foreign key (cveCarrera) references carrera (cveCarrera) on update cascade on delete cascade
  )engine = InnoDB;
  
  create table clase (
 	cveClase int (10) not null auto_increment,
-    cveAsignatura int (10) not null,
+    cveGrupo int (10) not null,
     cveCarrera VARCHAR (10) not null,
     primary key (cveClase),
-    foreign key (cveAsignatura) references asignatura (cveAsignatura) on update cascade on delete cascade,
+    foreign key (cveGrupo) references grupo (cveGrupo) on update cascade on delete cascade,
     foreign key (cveCarrera) references carrera (cveCarrera) on update cascade on delete cascade
  )engine = InnoDB;
  
@@ -161,13 +163,32 @@ CREATE TABLE personal_escolar (
     foreign key (cveClase) references clase (cveClase) on update cascade on delete cascade
  ) engine = InnoDB;
  
+ CREATE TABLE asignatura (
+	cveAsignatura INT (10) NOT NULL AUTO_INCREMENT,
+    nombre_asignatura varchar (60) not null,
+    cienciaBasica boolean not null,
+    cveCarrera varchar (10) null,
+    cveSemestre  int (10) not null,
+    PRIMARY KEY (cveAsignatura),
+    foreign key (cveCarrera) references carrera (cveCarrera) on update cascade on delete cascade,
+    foreign key (cveSemestre) references semestre (cveSemestre) on update cascade on delete cascade
+) ENGINE = InnoDB;
+
+create table asignatura_clase (
+	cveAsignatura int (10) not null,
+    cveClase int (10) not null,
+    primary key (cveAsignatura, cveClase),
+    foreign key (cveAsignatura) references asignatura (cveAsignatura) on update cascade on delete cascade,
+    foreign key (cveClase) references clase (cveClase) on update cascade on delete cascade
+) engine = InnoDB;
+ 
  create table asistencia (
 	cveAsistencia INT (10) NOT NULL auto_increment,
-    cveProfesor INT (10) NOT NULL,
+    cvePersona INT (10) NOT NULL,
     cveClase int (10) not null,
     fecha_asistencia DATE,
     primary key (cveAsistencia),
-    foreign key (cveProfesor) references profesor (cvePersona) on update cascade on delete cascade,
+    foreign key (cvePersona) references profesor (cvePersona) on update cascade on delete cascade,
     foreign key (cveClase) references clase (cveClase) on update cascade on delete cascade
  )engine=InnoDB;
  
@@ -308,7 +329,7 @@ CREATE TABLE personal_escolar (
  # PROCEDIMINETO tomar_asistencia
  drop procedure if exists tomar_asistencia;
  DELIMITER $$
- create procedure tomar_asistencia ( IN d_Profesor INT, d_Clase INT, d_Estudiante INT, d_Presente INT )
+ create procedure tomar_asistencia ( IN d_Profesor INT, d_Clase int, d_Estudiante varchar (8), d_Presente INT )
  begin
 	declare exit handler for sqlexception
     begin
@@ -318,9 +339,9 @@ CREATE TABLE personal_escolar (
     start transaction;
 		set autocommit = 0;
         
-		insert into asistencia (cveProfesor, cveClase, fecha_asistencia) values (d_Profesor, d_Clase, NOW());
+		insert into asistencia (cvePersona, cveClase, fecha_asistencia) values (d_Profesor, d_Clase, NOW());
 			set @id_asistencia = last_insert_id();
-		insert into detalle_asistencia (cveAsistencia, cveEstudiante, cvePresente) values (@id_asistencia, d_Estudiante, d_Presente);
+		insert into detalle_asistencia (cveAsistencia, matricula, cvePresente) values (@id_asistencia, d_Estudiante, d_Presente);
         
         commit;
  end $$
@@ -333,7 +354,7 @@ CREATE TABLE personal_escolar (
  drop procedure if exists registrar_estudiante;
  DELIMITER $$
  create procedure registrar_estudiante ( IN d_nombre varchar (40), d_pa varchar (40), d_ma varchar (40), d_tel varchar (10),
-	d_matricula varchar (8), d_semestre int, d_modalidad int, d_carrera varchar (10), d_fecha date )
+	d_matricula varchar (8), d_grupo int, d_carrera varchar (10), d_fecha date )
  begin
 	declare exit handler for sqlexception
     begin
@@ -345,8 +366,8 @@ CREATE TABLE personal_escolar (
         
         insert into usuario (nombre_persona, apellido_pa, apellido_ma, telefono) values (d_nombre, d_pa, d_ma, d_tel);
 			set @id_user = last_insert_id();
-        insert into estudiante (matricula, cvePersona, cveSemestre, cveModalidad, cveCarrera, fecha_ingreso) 
-			values (d_matricula, @id_user, d_semestre, d_modalidad, d_carrera, d_fecha);
+        insert into estudiante (matricula, cvePersona, cveGrupo, cveCarrera, fecha_ingreso) 
+			values (d_matricula, @id_user, d_grupo, d_carrera, d_fecha);
         
         commit;
  end $$
@@ -375,9 +396,9 @@ CREATE TABLE personal_escolar (
  -- ----------------------------------------------
  
  -- DATOS DEL TIPO DE MODALIDAD
- insert into modalidad (modalidad) values 
- ('Escolarizado'),
- ('Mixto');
+ insert into modalidad (cveModalidad, modalidad) values 
+ ('A', 'Escolarizado'),
+ ('B', 'Mixto');
  
 -- ----------------------------------------------
  
@@ -389,6 +410,29 @@ CREATE TABLE personal_escolar (
  ('IA', 'Ingeniería en Gestión Empresarial'),
  ('IMT', 'Ingeniería en Mecatrónica');
  
+ -- ----------------------------------------------
+ 
+ -- DATOS DE LOS GRUPOS 
+ insert into grupo (cveSemestre, cveModalidad) values 
+ (1, 'A'),
+ (2, 'A'),
+ (3, 'A'),
+ (4, 'A'),
+ (5, 'A'),
+ (6, 'A'),
+ (7, 'A'),
+ (8, 'A'),
+ (9, 'A'),
+ (1, 'B'),
+ (2, 'B'),
+ (3, 'B'),
+ (4, 'B'),
+ (5, 'B'),
+ (6, 'B'),
+ (7, 'B'),
+ (8, 'B'),
+ (9, 'B');
+ 
   -- ----------------------------------------------
  
  -- DATOS DEL TIPO DE ASISTENCIA
@@ -397,15 +441,51 @@ CREATE TABLE personal_escolar (
  ('No presente'),
  ('Retardo');
  
- -- ----------------------------------------------
+ -- -----------------------------------------------
  
- -- DATOS DEL TIPO DE ASISTENCIA
- insert into asignatura (asignatura) values 
- ('Cálculo Diferencial'),
- ('Cálculo Integral'),
- ('Cálculo Vectorial'),
- ('Fundamentos de programación'),
- ('Taller de Ética');
+ -- DATOS DE LAS ASIGNATURAS
+insert into asignatura (nombre_asignatura, cienciaBasica, cveCarrera, cveSemestre) values
+('Cálculo Diferencial', 1, 'ISC', 1),
+('Fundamentos de Programación', 0, 'ISC', 1),
+('Taller de Ética', 0, 'ISC', 1),
+('Matemáticas Discreta', 0, 'ISC', 1),
+('Taller de Administración', 0, 'ISC', 1),
+('Fundamentos de Inventigación', 1, 'ISC', 1),
+('Cálculo Integral', 1, 'ISC', 2),
+('Programación Orientada a Objetos', 0, 'ISC', 2),
+('Contabilidad Financiera', 0, 'ISC', 2),
+('Química', 1, 'ISC', 2),
+('Álgebra Lineal', 1, 'ISC', 2),
+('Probabilidad y Estadistica', 0, 'ISC', 2),
+('Cálculo Vectorial', 1, 'ISC', 3),
+('Estructura de Datos', 0, 'ISC', 3),
+('Cultura Empresarial', 0, 'ISC', 3),
+('Investigación de Operaciones', 0, 'ISC', 3),
+('Desarrollo Sustentable', 0, 'ISC', 3),
+('Física General', 1, 'ISC', 3),
+('Ecuaciones Diferenciales', 1, 'ISC', 4),
+('Métodos númericos', 0, 'ISC', 4),
+('Tópicos Avanzados de Programación', 0, 'ISC', 4),
+('Fundamentos de Base de Datos', 0, 'ISC', 4),
+('Simulación', 0, 'ISC', 4),
+('Principios Eléctricos y Aplicaciones Digitales', 0, 'ISC', 4),
+('Graficación', 0, 'ISC', 5),
+('Fundamentos de Telecomunicaciones', 0, 'ISC', 5),
+('Sistemas Operativos', 0, 'ISC', 5),
+('Taller de Base de Datos', 0, 'ISC', 5),
+('Fundamentos de Ingeniería de Software', 0, 'ISC', 5),
+('Arquitectura de Computadoras', 0, 'ISC', 5),
+('Lenguajes y Autómatas I', 0, 'ISC', 6),
+('Redes de Compuradoras', 0, 'ISC', 6),
+('Talles de Sistemas Operativos', 0, 'ISC', 6),
+('Administración de Base de Datos', 0, 'ISC', 6),
+('Ingeniería de Software', 0, 'ISC', 6),
+('Lenguajes de Interfaz', 0, 'ISC', 6),
+('Lenguajes y Autómatas II', 0, 'ISC', 7),
+('Conmutación Y Enrutamiento en Redes de Datos', 0, 'ISC', 7),
+('Taller de Investigación I', 0, 'ISC', 7),
+('Gestión de Proyectos en Software', 0, 'ISC', 7),
+('Sistemas Programables', 0, 'ISC', 7);
  
  -- ----------------------------------------------
  

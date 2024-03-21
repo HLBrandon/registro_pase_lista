@@ -63,7 +63,7 @@ $(document).ready(function () {
 
     $('#nombre_usuario').blur(function (e) { // Evento blur es igual al Lost Focus de Java
         e.preventDefault();
-        
+
         let nombre = $(this).val(); // recupera el valor del input, su esa el this para hacer referencia al id
 
         if (nombre.length > 3) { // verifica que el valor ingresado tenga más de tres digitos
@@ -92,9 +92,70 @@ $(document).ready(function () {
 
     });
 
+    $("#apellido_pa").blur(function (e) {
+        e.preventDefault();
+        let apellidoP = $(this).val();
+        if (apellidoP.length > 2) {
+            $("#alerta_paterno").html('');
+            $("#alerta_paterno").removeClass('invalid-feedback');
+            $(this).removeClass('border-danger is-invalid');
+
+            if (validarApellido(apellidoP)) {
+                $("#alerta_paterno").html('');
+                $("#alerta_paterno").removeClass('invalid-feedback');
+                $(this).removeClass('border-danger is-invalid');
+                $(this).addClass('border-success is-valid');
+            } else {
+                $("#alerta_paterno").html('Apellido no valido');
+                $("#alerta_paterno").addClass('invalid-feedback');
+                $(this).addClass('border-danger is-invalid');
+                $(this).removeClass('border-success is-valid');
+            }
+
+        } else {
+            $("#alerta_paterno").html('Ingresar un apellido más largo');
+            $("#alerta_paterno").addClass('invalid-feedback');
+            $(this).addClass('border-danger is-invalid');
+        }
+    });
+
+    $("#apellido_ma").blur(function (e) {
+        e.preventDefault();
+        let apellidoM = $("#apellido_ma").val();
+        if (apellidoM.length > 2) {
+            $("#alerta_materno").html('');
+            $("#alerta_materno").removeClass('invalid-feedback');
+            $(this).removeClass('border-danger is-invalid');
+
+            if (validarApellido(apellidoM)) {
+                $("#alerta_materno").html('');
+                $("#alerta_materno").removeClass('invalid-feedback');
+                $(this).removeClass('border-danger is-invalid');
+                $(this).addClass('border-success is-valid');
+            } else {
+                $("#alerta_materno").html('Apellido no valido');
+                $("#alerta_materno").addClass('invalid-feedback');
+                $(this).addClass('border-danger is-invalid');
+                $(this).removeClass('border-success is-valid');
+            }
+
+        } else {
+            $("#alerta_materno").html('Ingresar un apellido más largo');
+            $("#alerta_materno").addClass('invalid-feedback');
+            $(this).addClass('border-danger is-invalid');
+        }
+
+    });
+
     function validarNombre(nombre) {
-        var validar = /^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+$/;
+        var validar = /^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?: [A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)*$/
+
+        ;
         return validar.test(nombre);
+    }
+    function validarApellido(apellido) {
+        var validar = /^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+$/;
+        return validar.test(apellido);
     }
 
 });
