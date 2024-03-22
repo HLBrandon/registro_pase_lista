@@ -6,6 +6,7 @@ $(document).ready(function () {
     listarSemestre();
     listarModalidad();
     listarGrupo();
+    listarCarrera();
 
     function listarSemestre() {
         $.ajax({
@@ -23,6 +24,26 @@ $(document).ready(function () {
             }
         });
     }
+
+    function listarCarrera() {
+        $.ajax({
+            type: "GET",
+            url: "../../../php/listar_carrera.php",
+            success: function (response) {
+               
+                if (!response.error) {
+                    let carrera = JSON.parse(response);
+                    let datos = `<option value="">Selecciona una Carrera</option>`;
+                    carrera.forEach(element => {
+                        datos += `<option value='${element['cveCarrera']}'>${element['nombre_carrera']}</option>`;
+                    });
+                    $("#select__carrera").html(datos);
+                }
+            }
+        });
+
+    }
+
 
     function listarModalidad() {
         $.ajax({
@@ -150,7 +171,7 @@ $(document).ready(function () {
     function validarNombre(nombre) {
         var validar = /^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?: [A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)*$/
 
-        ;
+            ;
         return validar.test(nombre);
     }
     function validarApellido(apellido) {
