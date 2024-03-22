@@ -8,6 +8,8 @@ $(document).ready(function () {
     listarGrupo();
     listarCarrera();
 
+    // FUNCIONES PARA LLENAR LOS SELECT
+
     function listarSemestre() {
         $.ajax({
             type: "GET",
@@ -30,7 +32,7 @@ $(document).ready(function () {
             type: "GET",
             url: "../../../php/listar_carrera.php",
             success: function (response) {
-               
+
                 if (!response.error) {
                     let carrera = JSON.parse(response);
                     let datos = `<option value="">Selecciona una Carrera</option>`;
@@ -69,7 +71,6 @@ $(document).ready(function () {
             url: "../../../php/listar_grupo.php",
             success: function (response) {
                 let grupo = JSON.parse(response);
-                console.log(grupo);
                 if (!response.error) {
                     let datosGrupo = `<option value="">Selecciona un grupo</option>`;
                     grupo.forEach(element => {
@@ -82,10 +83,12 @@ $(document).ready(function () {
         });
     }
 
+    // VALIDAR LOS CAMPOS DE LOS INPUTS Y SELECTS
+
     $('#nombre_usuario').blur(function (e) { // Evento blur es igual al Lost Focus de Java
         e.preventDefault();
 
-        let nombre = $(this).val(); // recupera el valor del input, su esa el this para hacer referencia al id
+        let nombre = $(this).val(); // recupera el valor del input, su usa el this para hacer referencia al id
 
         if (nombre.length > 3) { // verifica que el valor ingresado tenga más de tres digitos
 
@@ -168,16 +171,18 @@ $(document).ready(function () {
 
     });
 
-    function validarNombre(nombre) {
-        var validar = /^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?: [A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)*$/
+    //EXPRESIONES REGULARES
 
-            ;
+    function validarNombre(nombre) {
+        var validar = /^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+(?:\s[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+)*$/;
         return validar.test(nombre);
     }
     function validarApellido(apellido) {
         var validar = /^[A-ZÁÉÍÓÚÑ][a-záéíóúñ]+$/;
         return validar.test(apellido);
     }
+
+    //ENVIAR REGISTRO RUTA DEL ARCHIVO REGISTRAR : "../../../php/insert/registrar-estudiante.php"
 
 });
 
