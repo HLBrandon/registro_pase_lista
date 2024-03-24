@@ -11,7 +11,8 @@ include '../../../config/global.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrar Estudiantes</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="<?= $ruta_raiz ?>/plugins/VanillaToasts/vanillatoasts.css">
+    <link rel="stylesheet" href="<?= $ruta_raiz ?>/plugins/toasts/vanillatoasts.css">
+
 
 </head>
 
@@ -28,27 +29,27 @@ include '../../../config/global.php';
 
                 <div class="col-md-6">
                     <label for="nombre_usuario" class="form-label">Nombre</label>
-                    <input type="text" class="form-control border-3" id="nombre_usuario" placeholder="Nombre" required>
+                    <input type="text" class="form-control border-3" id="nombre_usuario" placeholder="Nombre">
                     <span id="alert_nombre" class=""></span>
                 </div>
                 <div class="col-md-6">
                     <label for="apellido_pa" class="form-label">Apellido Paterno</label>
-                    <input type="text" class="form-control border-3" id="apellido_pa" placeholder="Paterno" required>
+                    <input type="text" class="form-control border-3" id="apellido_pa" placeholder="Paterno">
                     <span id="alerta_paterno"></span>
                 </div>
                 <div class="col-md-6">
                     <label for="apellido_ma" class="form-label">Apellido Materno</label>
-                    <input type="text" class="form-control border-3" id="apellido_ma" placeholder="Materno" required>
+                    <input type="text" class="form-control border-3" id="apellido_ma" placeholder="Materno">
                     <span id="alerta_materno"></span>
                 </div>
                 <div class="col-md-6">
                     <label for="telefono" class="form-label">No. Telefono</label>
-                    <input type="text" class="form-control border-3" id="telefono" placeholder="Telefono" required>
+                    <input type="text" class="form-control border-3" id="telefono" placeholder="Telefono">
                     <span id="alerta_telefono"></span>
                 </div>
                 <div class="col-md-6">
                     <label for="matricula" class="form-label">Matricula</label>
-                    <input type="text" class="form-control border-3" id="matricula" placeholder="matricula" required>
+                    <input type="text" class="form-control border-3" id="matricula" placeholder="matricula">
                     <span id="alerta_matricula"></span>
                 </div>
                 <div class="col-md-6">
@@ -67,7 +68,7 @@ include '../../../config/global.php';
                 </div>
                 <div class="col-md-6">
                     <label class="form-label" for="fecha__ingreso">Fecha de ingreso</label>
-                    <input type="text" class="form-control border-3" id="fecha__ingreso" placeholder="AAAA-mm-dd" required>
+                    <input type="text" class="form-control border-3" id="fecha__ingreso" placeholder="AAAA-mm-dd">
                     <span id="alerta_fecha"></span>
                 </div>
                 
@@ -87,7 +88,7 @@ include '../../../config/global.php';
     
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="<?= $ruta_raiz ?>/plugins/VanillaToasts/vanillatoasts.js"></script>
+    <script src="<?= $ruta_raiz ?>/plugins/toasts/vanillatoasts.js"></script>
     <script src="<?= $ruta_raiz ?>/js/register-estudiante.js"></script>
 </body>
 
