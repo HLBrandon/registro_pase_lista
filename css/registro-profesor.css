@@ -1,0 +1,21 @@
+#btnGuardar{
+    background-color: #17078f;
+    border-color: #fff;
+}
+#btnGuardar:hover{
+    background-color: #fff;
+    color: #17078f;  
+    border-color: #17078f;
+    font-weight: bold;
+}
+.cancelar{
+    background-color: rgb(199, 27, 27);
+    border-color: #fff;
+    color: #fff;
+}
+.cancelar:hover{
+    background-color: #fff;
+    color:  rgb(199, 27, 27);
+    border-color:  rgb(199, 27, 27);
+    font-weight: bold;
+}

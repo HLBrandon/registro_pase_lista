@@ -1,0 +1,23 @@
+body{
+    background-color: rgba(221, 225, 230, 0.705);
+}
+
+.guardarContra{
+ background: #17078f;
+  color: #FFF;
+  border: 2px solid #FFF;
+  border-radius: 0px;
+ 
+  font-family: Arial, Helvetica, sans-serif;
+  
+  cursor: pointer;
+  -webkit-transition: ease-out 0.4s;
+  -moz-transition: ease-out 0.4s;
+  transition: ease-out 0.4s;
+}
+
+.guardarContra:hover {
+    box-shadow: inset 400px 0 0 0 #FFF;
+    border: solid 2px #17078f;
+    color: #17078f;
+  }
