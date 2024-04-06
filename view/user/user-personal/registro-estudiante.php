@@ -74,14 +74,14 @@ include '../../../config/global.php';
                 
                 <div class="col-12 text-center">
                     <button class="btn btn-primary fw-bolder" type="submit" id="btnGuardar" name="btnGuardar">Guardar</button>
-                    <a class="btn btn-secondary fw-bold" href="<?= $ruta_raiz ?>/view/user/index.php">Cancelar</a>
+                    <a class="btn btn-secondary fw-bold" href="<?= $ruta_raiz ?>/view/user/user-personal/">Cancelar</a>
                 </div>
 
             </form>
         </div>
         <div class="bg-white p-4 rounded-2 my-3">
             <div class="text-center">
-                <img src="<?= $ruta_raiz ?>/imagenes/logo tec.svg" class="logo" style="height: 20vh;">
+                <img src="<?= $ruta_raiz ?>/img/logo-tec.svg" class="logo" style="height: 20vh;">
             </div>
         </div>
     </div>

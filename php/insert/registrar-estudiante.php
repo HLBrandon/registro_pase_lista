@@ -7,24 +7,24 @@ if (isset($_POST)) {
 
     if (
         // ESTOS NOMBRES VIENEN DESDE LA DATA DEL AJAX
-        !empty($_POST["nombre"]) AND 
-        !empty($_POST["apellido_pa"]) AND 
-        !empty($_POST["apellido_ma"]) AND
-        !empty($_POST["telefono"]) AND
-        !empty($_POST["matricula"]) AND
-        !empty($_POST["carrera"]) AND
-        !empty($_POST["grupo"]) AND
+        !empty($_POST["nombre"]) and
+        !empty($_POST["apellido_pa"]) and
+        !empty($_POST["apellido_ma"]) and
+        !empty($_POST["telefono"]) and
+        !empty($_POST["matricula"]) and
+        !empty($_POST["carrera"]) and
+        !empty($_POST["grupo"]) and
         !empty($_POST["fecha_ingreso"])
     ) {
 
         if (
-            validarNombre($_POST["nombre"]) AND
-            validarApellido($_POST["apellido_pa"]) AND
-            validarApellido($_POST["apellido_ma"]) AND
-            validarTelefono($_POST["telefono"]) AND
-            validarMatricula($_POST["matricula"]) AND
-            validarCarrera($_POST["carrera"]) AND
-            is_numeric($_POST["grupo"]) AND
+            validarNombre($_POST["nombre"]) and
+            validarApellido($_POST["apellido_pa"]) and
+            validarApellido($_POST["apellido_ma"]) and
+            validarTelefono($_POST["telefono"]) and
+            validarMatricula($_POST["matricula"]) and
+            validarCarrera($_POST["carrera"]) and
+            is_numeric($_POST["grupo"]) and
             validarFechaIngreso($_POST["fecha_ingreso"])
         ) {
             $nombre        = $_POST["nombre"];
@@ -37,35 +37,29 @@ if (isset($_POST)) {
             $fecha_ingreso = $_POST["fecha_ingreso"];
 
             // VALIDAR SI LA MATRICULA YA ESTA REGISTRADA CON UN USUARIO
-            $stmt = $conexion -> prepare("SELECT * FROM estudiante NATURAL JOIN usuario WHERE matricula = ?");
-            $stmt -> bind_param("s", $matricula);
-            $stmt -> execute();
-            $stmt -> store_result();
+            $stmt = $conexion->prepare("SELECT * FROM estudiante NATURAL JOIN usuario WHERE matricula = ?");
+            $stmt->bind_param("s", $matricula);
+            $stmt->execute();
+            $stmt->store_result();
 
-            if ($stmt -> num_rows == 0) { //No hay columnas, el alumno no existe
-                
+            if ($stmt->num_rows == 0) { //No hay columnas, el alumno no existe
+
                 //Procede a registrar un alumno
-                $stmt = $conexion -> prepare("CALL registrar_estudiante(?, ?, ?, ?, ?, ?, ?, ?)");
-                $stmt -> bind_param("ssssssss", $nombre, $pa, $ma, $tel, $matricula, $grupo, $carrera, $fecha_ingreso);
-                
-                if ($stmt -> execute()) {
+                $stmt = $conexion->prepare("CALL registrar_estudiante(?, ?, ?, ?, ?, ?, ?, ?)");
+                $stmt->bind_param("ssssssss", $nombre, $pa, $ma, $tel, $matricula, $grupo, $carrera, $fecha_ingreso);
+
+                if ($stmt->execute()) {
                     print_r(105); // Registro exitoso
                 } else {
                     print_r(103); // Error al insertar
                 }
-
             } else {
                 print_r(102); // Usuario ya existente
             }
-            
         } else {
             print_r(101); // valores no validos
         }
-        
     } else {
         print_r(100); // campos vacios
     }
-
 }
-
-?>
