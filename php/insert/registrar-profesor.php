@@ -8,7 +8,7 @@ if (isset($_POST)) {
     if (
         // ESTOS NOMBRES VIENEN DESDE LA DATA DEL AJAX
         !empty($_POST["nombre_usuario"]) AND 
-        !empty($_POST["apellido_pa"]) AND 
+        !empty($_POST["apellido_pa"]) AND
         !empty($_POST["apellido_ma"]) AND
         !empty($_POST["telefono"]) AND
         !empty($_POST["correo"]) AND

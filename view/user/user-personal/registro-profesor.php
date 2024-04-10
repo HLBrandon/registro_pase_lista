@@ -29,32 +29,32 @@ include '../../../config/global.php';
 
                 <div class="col-md-6">
                     <label for="nombre_usuario" class="form-label">Nombre</label>
-                    <input type="text" class="form-control border-3" id="nombre_usuario" placeholder="Nombre">
+                    <input type="text" class="form-control border-3" name="nombre_usuario" id="nombre_usuario" placeholder="Nombre">
                     <span id="alert_nombre" class=""></span>
                 </div>
                 <div class="col-md-6">
                     <label for="apellido_pa" class="form-label">Apellido Paterno</label>
-                    <input type="text" class="form-control border-3" id="apellido_pa" placeholder="Paterno">
+                    <input type="text" class="form-control border-3" name="apellido_pa" id="apellido_pa" placeholder="Paterno">
                     <span id="alerta_paterno"></span>
                 </div>
                 <div class="col-md-6">
                     <label for="apellido_ma" class="form-label">Apellido Materno</label>
-                    <input type="text" class="form-control border-3" id="apellido_ma" placeholder="Materno">
+                    <input type="text" class="form-control border-3" name="apellido_ma" id="apellido_ma" placeholder="Materno">
                     <span id="alerta_materno"></span>
                 </div>
                 <div class="col-md-6">
                     <label for="telefono" class="form-label">No. Telefono</label>
-                    <input type="text" class="form-control border-3" id="telefono" placeholder="Telefono">
+                    <input type="text" class="form-control border-3" name="telefono" id="telefono" placeholder="Telefono">
                     <span id="alerta_telefono"></span>
                 </div>
                 <div class="col-md-6">
                     <label for="correo" class="form-label">Correo electrónico</label>
-                    <input type="text" class="form-control border-3" id="correo" placeholder="Correo electrónico">
+                    <input type="text" class="form-control border-3" name="correo" id="correo" placeholder="Correo electrónico">
                     <span id="alerta_correo"></span>
                 </div>
                 <div class="col-md-6">
                     <label for="clave" class="form-label">Contraseña</label>
-                    <input type="password" class="form-control border-3" id="clave" placeholder="Contraseña">
+                    <input type="password" class="form-control border-3" name="clave" id="clave" placeholder="Contraseña">
                     <span id="alerta_clave"></span>
                 </div>
                 <div class="col-12 text-center">

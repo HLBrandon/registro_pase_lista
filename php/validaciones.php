@@ -21,7 +21,7 @@
     }
 
     function validarPassword ($clave) {
-        return preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#@%*])[A-Za-z\\d#@%*]{5,10}$/", $clave);
+        return preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[#@%*])[A-Za-z\\d#@%*]{5,20}$/", $clave);
     }
 
     // VALIDACIONES PARA LA TABLA ESTUDIANTE
@@ -36,6 +36,7 @@
     function validarCarrera ($carrera) {
         return preg_match("/^(IA|IGE|IIA|IMT|ISC)$/", $carrera);
     }
+    
 
 
 ?>
