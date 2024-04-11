@@ -60,7 +60,7 @@ include '../../../config/global.php';
             </div>
             <div class="text-center">
                 <button class="btn btn-primary fw-bold text-uppercase" type="submit">Filtrar</button>
-                <a class="btn btn-secondary fw-bold text-uppercase" href="<?= $ruta_raiz ?>/view/user/index.php">cancelar</a>
+                <a class="btn btn-secondary fw-bold text-uppercase" href="<?= $ruta_raiz ?>/view/user/user-profesor/index.php">cancelar</a>
             </div>
 
         </div>

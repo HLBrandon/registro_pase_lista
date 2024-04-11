@@ -28,13 +28,13 @@ include '../../../config/global.php';
         </div>
         <div class="modal-footer flex-column align-items-stretch w-100 gap-2 pb-3 border-top-0">
 
-          <a href="<?= $ruta_raiz ?>/view/user/misClases.php" class="btn btn-lg btn-secondary ajustes">
+          <a href="<?= $ruta_raiz ?>/view/user/user-profesor/misClases.php" class="btn btn-lg btn-secondary ajustes">
             Mis clases
           </a>
-          <a href="<?= $ruta_raiz ?>/view/user/misListas.php" class="btn btn-lg btn-secondary ajustes">
+          <a href="<?= $ruta_raiz ?>/view/user/user-profesor/misListas.php" class="btn btn-lg btn-secondary ajustes">
             Historial de pases
           </a>
-          <a href="<?= $ruta_raiz ?>/view/user/cambiarContra.php" class="btn btn-lg btn-secondary ajustes">
+          <a href="<?= $ruta_raiz ?>/view/user/user-profesor/cambiarContra.php" class="btn btn-lg btn-secondary ajustes">
             Ajustes
           </a>
 
