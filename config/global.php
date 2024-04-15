@@ -1,3 +1,4 @@
 <?php
-    $ruta_raiz = '/pase_lista';
+    //$ruta_raiz = "//" . $_SERVER["SERVER_NAME"] . "/";
+    $ruta_raiz = "/pase_lista/";
 ?>

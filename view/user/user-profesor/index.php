@@ -10,7 +10,7 @@ include '../../../config/global.php';
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <link rel="stylesheet" href="<?= $ruta_raiz ?>/css/estilosIndex.css">
+  <link rel="stylesheet" href="<?= $ruta_raiz ?>css/estilosIndex.css">
   <title>Home</title>
 </head>
 
@@ -28,18 +28,18 @@ include '../../../config/global.php';
         </div>
         <div class="modal-footer flex-column align-items-stretch w-100 gap-2 pb-3 border-top-0">
 
-          <a href="<?= $ruta_raiz ?>/view/user/user-profesor/misClases.php" class="btn btn-lg btn-secondary ajustes">
+          <a href="<?= $ruta_raiz ?>view/user/user-profesor/misClases.php" class="btn btn-lg btn-secondary ajustes">
             Mis clases
           </a>
-          <a href="<?= $ruta_raiz ?>/view/user/user-profesor/misListas.php" class="btn btn-lg btn-secondary ajustes">
+          <a href="<?= $ruta_raiz ?>view/user/user-profesor/misListas.php" class="btn btn-lg btn-secondary ajustes">
             Historial de pases
           </a>
-          <a href="<?= $ruta_raiz ?>/view/user/user-profesor/cambiarContra.php" class="btn btn-lg btn-secondary ajustes">
+          <a href="<?= $ruta_raiz ?>view/user/user-profesor/cambiarContra.php" class="btn btn-lg btn-secondary ajustes">
             Ajustes
           </a>
 
-          <a href="<?= $ruta_raiz ?>/php/login/logout.php" class="cerrar btn btn-lg btn-secondary">Cerrar sesión</a>
-          <img src="<?= $ruta_raiz ?>/img/logo-tec.svg" class="logo">
+          <a href="<?= $ruta_raiz ?>php/login/logout.php" class="cerrar btn btn-lg btn-secondary">Cerrar sesión</a>
+          <img src="<?= $ruta_raiz ?>img/logo-tec.svg" class="logo">
         </div>
       </div>
     </div>
