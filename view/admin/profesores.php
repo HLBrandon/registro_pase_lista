@@ -21,7 +21,7 @@
 
     <div class="container-fluid">
 
-        <button class="btn btn-success rounded-5 fw-bold text-uppercase" type="button" id="btnCrear">Crear</button>
+        <button class="btn btn-success mb-4 rounded-5 fw-bold text-uppercase" type="button" id="btnCrear">Crear</button>
 
         <?php include 'modals/modal-profesor.php'; ?>
 
@@ -61,7 +61,7 @@
     <?php include 'include/footer.php'; ?>
 
     <?php include 'include/scripts.php'; ?>
-
+    
     <script src="<?= $ruta_raiz ?>js/admin/admin-registro-profesor.js"></script>
 
 </body>
