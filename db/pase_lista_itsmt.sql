@@ -7,9 +7,13 @@ USE pase_lista_itsmt;
 
 -- BORRANDO TABLAS EN CASO DE QUE EXISTAN
 
+drop table if exists asignatura_semestre;
 drop table if exists detalle_asistencia;
 drop table if exists asistencia;
 drop table if exists asignatura_alumnos;
+drop table if exists horario;
+drop table if exists salon;
+drop table if exists dia;
 drop table if exists impartir_asignatura;
 drop table if exists asignatura;
 drop table if exists estudiante;
@@ -88,6 +92,7 @@ CREATE TABLE usuario (
  CREATE TABLE personal_escolar (
 	cvePersona INT (10) NOT NULL,
     cveInfoPersonal INT (10) NOT NULL,
+    RFC varchar (15),
     PRIMARY KEY (cvePersona),
     FOREIGN KEY (cvePersona) REFERENCES usuario (cvePersona)
 		on update cascade on delete cascade,
@@ -113,7 +118,7 @@ CREATE TABLE usuario (
  ) engine = InnoDB;
  
  create table jefe_carrera (
-	cvePersona INT  NOT NULL,
+	cvePersona INT (10) NOT NULL,
     primary key (cvePersona),
     foreign key (cvePersona) references personal_escolar (cvePersona)
 		on update cascade on delete cascade
@@ -137,10 +142,10 @@ CREATE TABLE usuario (
  ) engine = InnoDB;
  
  create table estudiante (
-	matricula VARCHAR (8) not null,
+	matricula VARCHAR (9) not null,
 	cvePersona INT (10) not null,
     cveGrupo INT (10) not null,
-    cveCarrera VARCHAR (8)  not null,
+    cveCarrera VARCHAR (10)  not null,
     fecha_ingreso date,
     primary key (matricula),
     foreign key (cvePersona) references usuario (cvePersona)
@@ -152,32 +157,54 @@ CREATE TABLE usuario (
  ) engine = InnoDB;
  
  CREATE TABLE asignatura (
-	cveAsignatura INT (10) NOT NULL auto_increment,
-    nombre_asignatura varchar (100) not null,
-    cienciaBasica INT (1) not null,
-    cveCarrera varchar (8)  null,
-    cveSemestre  int (10) not null,
-    PRIMARY KEY (cveAsignatura),
-    foreign key (cveCarrera) references carrera (cveCarrera)
-		on update cascade on delete cascade,
-    foreign key (cveSemestre) references semestre (cveSemestre)
-		on update cascade on delete cascade
+	cveAsignatura varchar (8) NOT NULL primary key,/* TRES LETRAS UN GUION Y CUTARO NUMEROS: ACA-0909 */
+    nombre_asignatura varchar (255) not null
 ) engine = InnoDB;
 
  create table impartir_asignatura (
+	cveImpa_Asig INT (10) NOT NULL auto_increment,
 	cvePersona INT (10) NOT NULL,
-    cveAsignatura INT (10) NOT NULL,
+    cveAsignatura varchar (8) NOT NULL,
+    cveGrupo INT (10) not null,
 	fecha_inicio_semestre DATE not null,
+    primary key (cveImpa_Asig),
     foreign key (cvePersona) references profesor (cvePersona)
 		on update cascade on delete cascade,
     foreign key (cveAsignatura) references asignatura (cveAsignatura)
+		on update cascade on delete cascade,
+	foreign key (cveGrupo) references grupo (cveGrupo)
+		on update cascade on delete cascade
+ ) engine = InnoDB;
+ 
+ create table dia (
+	cveDia int (5) primary key not null auto_increment,
+    nombre_dia varchar (30) not null
+ );
+ 
+ create table salon (
+	cveSalon int (10) primary key not null auto_increment,
+    nombre_salon varchar (255)
+ );
+ 
+ create table horario (
+	cveHorario int (10) primary key not null,
+    cveImpa_Asig int (10) not null,
+    cveDia INT (5),
+    cveSalon int (10),
+    foreign key (cveImpa_Asig) references impartir_asignatura (cveImpa_Asig)
+		on update cascade on delete cascade,
+	foreign key (cveDia) references dia (cveDia)
+		on update cascade on delete cascade,
+	foreign key (cveSalon) references salon (cveSalon)
 		on update cascade on delete cascade
  ) engine = InnoDB;
 
  create table asignatura_alumnos (
-	cveAsignatura int (10) not null,
-    matricula varchar (8)  not null,
-    primary key (cveAsignatura, matricula),
+	cveAsig_alum int (10) not null auto_increment,
+	cveAsignatura varchar (8) not null,
+    matricula varchar (9)  not null,
+    fecha_inicio_semestre date not null,
+    primary key (cveAsig_alum),
     foreign key (cveAsignatura) references asignatura (cveAsignatura)
 		on update cascade on delete cascade,
     foreign key (matricula) references estudiante (matricula)
@@ -187,8 +214,9 @@ CREATE TABLE usuario (
  create table asistencia (
 	cveAsistencia INT (10) NOT NULL auto_increment,
     cvePersona INT (10) NOT NULL,
-    cveAsignatura int (10) not null,
+    cveAsignatura varchar (8) not null,
     fecha_asistencia DATE not null,
+    hora_asistencia time,
     primary key (cveAsistencia),
     foreign key (cvePersona) references profesor (cvePersona)
 		on update cascade on delete cascade,
@@ -197,15 +225,29 @@ CREATE TABLE usuario (
  ) engine = InnoDB;
  
  create table detalle_asistencia (
+	cveDetalle int (10) not null auto_increment,
 	cveAsistencia INT (10) NOT NULL,
-    matricula varchar (8) NOT NULL,
+    matricula varchar (9) NOT NULL,
     cvePresente INT (10) NOT NULL,
-    primary key (cveAsistencia, matricula),
+    primary key (cveDetalle),
     foreign key (cveAsistencia) references asistencia (cveAsistencia)
 		on update cascade on delete cascade,
     foreign key (matricula) references estudiante (matricula)
 		on update cascade on delete cascade,
     foreign key (cvePresente) references asis_presente (cvePresente)
+		on update cascade on delete cascade
+ ) engine = InnoDB;
+ 
+ create table asignatura_semestre (
+	cveAsig_seme INT (10) not null auto_increment primary key,
+    cveAsignatura varchar (8) not null,
+    cveSemestre int (10) not null,
+    cveCarrera varchar (8) not null,
+	foreign key (cveAsignatura) references asignatura (cveAsignatura)
+		on update cascade on delete cascade,
+	foreign key (cveSemestre) references semestre (cveSemestre)
+		on update cascade on delete cascade,
+	foreign key (cveCarrera) references carrera (cveCarrera)
 		on update cascade on delete cascade
  ) engine = InnoDB;
  
@@ -451,13 +493,13 @@ CREATE TABLE usuario (
  -- -----------------------------------------------
  
  -- DATOS DE LAS ASIGNATURAS
-insert into asignatura (nombre_asignatura, cienciaBasica, cveCarrera, cveSemestre) values
-('Lenguajes y Autómatas I', 0, 'ISC', 6),
-('Redes de Compuradoras', 0, 'ISC', 6),
-('Talles de Sistemas Operativos', 0, 'ISC', 6),
-('Administración de Base de Datos', 0, 'ISC', 6),
-('Ingeniería de Software', 0, 'ISC', 6),
-('Lenguajes de Interfaz', 0, 'ISC', 6);
+insert into asignatura (cveAsignatura, nombre_asignatura) values
+("SCD-1015",'Lenguajes y Autómatas I'),
+("SCD-1021", 'Redes de Compuradoras'),
+("SCA-1026", 'Taller de Sistemas Operativos'),
+("SCB-1001", 'Administración de Base de Datos'),
+("SCD-1011", 'Ingeniería de Software'),
+("SCC-1014", 'Lenguajes de Interfaz');
 
 -- ------------------------------------------------
 
@@ -470,7 +512,8 @@ INSERT INTO `usuario` (`cvePersona`, `nombre_persona`, `apellido_pa`, `apellido_
 (5, 'Brandon', 'Hernandez', 'Lopez', '2323332211'),
 (6, 'Kevin', 'Guevara', 'Quiroz', '2323332211'),
 (7, 'Alan', 'Guevara', 'Quiroz', '2323332211'),
-(8, 'Luis Alberto', 'Ceceña', 'Hernandez', '2323332211');
+(8, 'Luis Alberto', 'Ceceña', 'Hernandez', '2323332211'),
+(9, 'Cesar de Jesus', 'Reyes', 'Ruiz', '2323332211');
 
 -- ------------------------------------------------
 
@@ -482,11 +525,11 @@ INSERT INTO `info_personal` (`cveInfoPersonal`, `correo`, `contra`) VALUES
 (3, 'gerardo@example.com', '$2y$10$no2mGLWfN3x4G4WSFRupZ.BtlWfBEuEVC38eUeVkXzrKidL6aTnQG'),
 (4, 'franciscoJ@example.com', '$2y$10$EUjHwpTCeLeQ059EL1lCIO52ne1vRwiUSRsXOy0U0ikdW6.XNHnT6');
 
-INSERT INTO `personal_escolar` (`cvePersona`, `cveInfoPersonal`) VALUES
-(1, 1),
-(2, 2),
-(3, 3),
-(4, 4);
+INSERT INTO `personal_escolar` (`cvePersona`, `cveInfoPersonal`, `RFC`) VALUES
+(1, 1, "GOMC880326H50"),
+(2, 2, "GOMC880326H51"),
+(3, 3, "GOMC880326H52"),
+(4, 4, "GOMC880326H53");
 
 INSERT INTO `profesor` (`cvePersona`) VALUES
 (1),
@@ -501,6 +544,7 @@ INSERT INTO `estudiante` (`matricula`, `cvePersona`, `cveGrupo`, `cveCarrera`, `
 ('210I0001', 5, 6, 'ISC', '2022-02-01'),
 ('210I0013', 7, 6, 'ISC', '2022-02-01'),
 ('210I0015', 6, 6, 'ISC', '2022-02-01'),
-('210I0059', 8, 6, 'ISC', '2021-02-01');
+('210I0059', 8, 6, 'ISC', '2021-02-01'),
+('B220I0133', 9, 6, 'ISC', '2023-02-01');
  
  
