@@ -1,6 +1,6 @@
 $(document).ready(function () {
   // const rutaRaiz = "//"+window.location.host+"/";
-  const rutaRaiz = "/pase_lista/";
+  
 
   $.ajax({
     type: "GET",

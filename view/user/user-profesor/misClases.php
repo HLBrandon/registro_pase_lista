@@ -28,23 +28,8 @@ include '../../../config/global.php';
                     </h1>
                 </div>
 
-                <div class="modal-footer flex-column align-items-stretch w-100 gap-2 pb-3 border-top-0">
+                <div class="modal-footer flex-column align-items-stretch w-100 gap-2 pb-3 border-top-0" id="misClases">
 
-                    <a href="clase.php" class="misClases btn btn-lg  ajustes">
-                        ISC-1A-2024
-                    </a>
-                    <a href="" class="misClases btn btn-lg  ajustes">
-                        ISC-1A-2024
-                    </a>
-                    <a href="" class="misClases btn btn-lg  ajustes">
-                        ISC-1A-2024
-                    </a>
-                    <a href="" class="misClases btn btn-lg  ajustes">
-                        ISC-1A-2024
-                    </a>
-                    <a href="" class="misClases btn btn-lg  ajustes">
-                        ISC-1A-2024
-                    </a>
 
                 </div>
             </div>
@@ -53,7 +38,7 @@ include '../../../config/global.php';
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
+    <script src="<?= $ruta_raiz ?>/js/profesor/misClases.js"></script>
 </body>
 
 </html>
