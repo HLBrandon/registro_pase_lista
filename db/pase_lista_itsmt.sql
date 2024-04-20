@@ -166,13 +166,17 @@ CREATE TABLE usuario (
 	cvePersona INT (10) NOT NULL,
     cveAsignatura varchar (8) NOT NULL,
     cveGrupo INT (10) not null,
+    cveCarrera varchar (8) not null,
 	fecha_inicio_semestre DATE not null,
+    fecha_fin_semestre DATE null,
     primary key (cveImpa_Asig),
     foreign key (cvePersona) references profesor (cvePersona)
 		on update cascade on delete cascade,
     foreign key (cveAsignatura) references asignatura (cveAsignatura)
 		on update cascade on delete cascade,
 	foreign key (cveGrupo) references grupo (cveGrupo)
+		on update cascade on delete cascade,
+	foreign key (cveCarrera) references carrera (cveCarrera)
 		on update cascade on delete cascade
  ) engine = InnoDB;
  
@@ -422,6 +426,35 @@ CREATE TABLE usuario (
  end $$
  DELIMITER ;
   # FIN PROCEDIMINETO registrar_estudiante
+
+ -- ----------------------------------------------------------------------------------
+  
+ # PROCEDIMINETO para asignar al profesor una clase
+ drop procedure if exists impartir_asignatura;
+ DELIMITER $$
+ create procedure impartir_asignatura ( IN d_profesor INT, d_asignatura varchar (8), d_grupo int, d_carrera varchar (8), d_fecha date)
+ begin
+	declare exit handler for sqlexception
+    begin
+		rollback;
+    end;
+    
+    start transaction;
+		set autocommit = 0;
+        
+        insert into impartir_asignatura (cvePersona, cveAsignatura, cveGrupo, cveCarrera, fecha_inicio_semestre) values
+			(d_profesor, d_asignatura, d_grupo, d_carrera, d_fecha);
+		
+        set @id_impartir = last_insert_id();
+        
+        set @fecha_fin = (SELECT DATE_ADD( (SELECT fecha_inicio_semestre FROM impartir_asignatura where cveImpa_Asig = @id_impartir), INTERVAL 5 MONTH));
+        
+        update impartir_asignatura set fecha_fin_semestre = @fecha_fin where cveImpa_Asig = @id_impartir;
+        
+        commit;
+ end $$
+ DELIMITER ;
+  # FIN PROCEDIMINETO para asignar al profesor una clase
  
  -- ---------------------------------------------------------------------------------
  -- ---------------------------------------------------------------------------------
@@ -546,5 +579,14 @@ INSERT INTO `estudiante` (`matricula`, `cvePersona`, `cveGrupo`, `cveCarrera`, `
 ('210I0015', 6, 6, 'ISC', '2022-02-01'),
 ('210I0059', 8, 6, 'ISC', '2021-02-01'),
 ('B220I0133', 9, 6, 'ISC', '2023-02-01');
- 
- 
+
+-- -------------------------------------------------
+
+-- ASIGNATURAS QUE IMPARTEN LOS PROFESORES
+INSERT INTO `impartir_asignatura` (`cveImpa_Asig`, `cvePersona`, `cveAsignatura`, `cveGrupo`, `cveCarrera`, `fecha_inicio_semestre`, `fecha_fin_semestre`) VALUES
+(1, 1, 'SCA-1026', 6, 'ISC', '2024-02-01', '2024-07-01'),
+(2, 1, 'SCD-1015', 6, 'ISC', '2024-02-01', '2024-07-01'),
+(3, 2, 'SCB-1001', 6, 'ISC', '2024-02-01', '2024-07-01'),
+(4, 2, 'SCD-1021', 6, 'ISC', '2024-02-01', '2024-07-01'),
+(5, 3, 'SCD-1011', 6, 'ISC', '2024-02-01', '2024-07-01'),
+(6, 4, 'SCC-1014', 6, 'ISC', '2024-02-01', '2024-07-01');
