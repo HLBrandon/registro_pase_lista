@@ -121,6 +121,7 @@ if ($cveAsignatura == "" || $cveProfesor == "") {
 
 
     </script>
+    <script src="<?=$ruta_raiz?>/js/profesor/clases.js"></script>
     
 </body>
 
