@@ -48,6 +48,11 @@ include '../../../config/global.php';
                     <span id="alerta_telefono"></span>
                 </div>
                 <div class="col-md-6">
+                    <label for="telefono" class="form-label">RFC</label>
+                    <input type="text" class="form-control border-3" name="rfc" id="rfc" placeholder="RFC">
+                    <span id="alerta_rfc"></span>
+                </div>
+                <div class="col-md-6">
                     <label for="correo" class="form-label">Correo electrónico</label>
                     <input type="text" class="form-control border-3" name="correo" id="correo" placeholder="Correo electrónico">
                     <span id="alerta_correo"></span>

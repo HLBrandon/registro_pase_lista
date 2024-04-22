@@ -2,6 +2,14 @@
 
 include '../../../config/global.php';
 
+$cveAsignatura = (!empty($_GET["cveAsignatura"])) ? $_GET["cveAsignatura"] : "";
+$cveProfesor = (!empty($_GET["cveProfesor"])) ? $_GET["cveProfesor"] : "";
+
+if ($cveAsignatura == "" || $cveProfesor == "") {
+    echo "Parece que ha ocurrido un error";
+    die();
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -33,15 +41,15 @@ include '../../../config/global.php';
                 <div class="col-sm-4">
                     <div class="mb-3">
                         <label class="form-label" for="">Profesor</label>
-                        <select class="form-select" name="select-profesor" disabled>
-                            <option value="1">Nombre del profesor</option>
+                        <select class="form-select" name="select-profesor" disabled id="select-profesor">
+                            <option value="<?= $_SESSION["cvePersona"] ?>"><?= $_SESSION["cvePersona"] ?></option>
                         </select>
                     </div>
                 </div>
                 <div class="col-sm-4">
                     <div class="mb-3">
                         <label class="form-label" for="">Clase</label>
-                        <select class="form-select" name="select-profesor" disabled>
+                        <select class="form-select" name="select-profesor" disabled id="select-clase">
                             <option value="1">ISC-6A-2024</option>
                         </select>
                     </div>
@@ -49,7 +57,7 @@ include '../../../config/global.php';
                 <div class="col-sm-4">
                     <div class="mb-3">
                         <label class="form-label" for="">Fecha</label>
-                        <input class="form-control" value="<?= date("Y-m-d"); ?>" type="text" disabled>
+                        <input class="form-control" value="<?= date("Y-m-d"); ?>" type="date" disabled>
                     </div>
                 </div>
             </div>
@@ -65,7 +73,7 @@ include '../../../config/global.php';
                 <div class="bg-body-secondary p-3 rounded-3 mb-3">
                     <div class="row">
                         <div class="col-sm-6 my-auto">
-                            <input value="1" type="text" name="" id="">
+                            <input hidden value="1" type="text" name="" id="">
                             Nombre Apellido Apellido 1
                         </div>
                         <div class="col-sm-6">
@@ -78,60 +86,10 @@ include '../../../config/global.php';
                         </div>
                     </div>
                 </div>
-
-
-                <div class="bg-body-secondary p-3 rounded-3 mb-3">
-                    <div class="row">
-                        <div class="col-sm-6 my-auto">
-                            <input value="2" type="text" name="" id="">
-                            Nombre Apellido Apellido 2
-                        </div>
-                        <div class="col-sm-6">
-                            <select class="form-select seleccionar-presencia" name="" id="">
-                                <option selected>Seleccionar2</option>
-                                <option value="1">Presente</option>
-                                <option value="2">No Presente</option>
-                                <option value="3">Retardo</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-body-secondary p-3 rounded-3 mb-3">
-                    <div class="row">
-                        <div class="col-sm-6 my-auto">
-                            <input value="3" type="text" name="" id="">
-                            . . .
-                        </div>
-                        <div class="col-sm-6">
-                            <select class="form-select seleccionar-presencia" name="" id="">
-                                <option selected>Seleccionar3</option>
-                                <option value="1">Presente</option>
-                                <option value="2">No Presente</option>
-                                <option value="3">Retardo</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="bg-body-secondary p-3 rounded-3 mb-3">
-                    <div class="row">
-                        <div class="col-sm-6 my-auto">
-                            <input value="4" type="text" name="" id="">
-                            Nombre Apellido Apellido N
-                        </div>
-                        <div class="col-sm-6">
-                            <select class="form-select seleccionar-presencia" name="" id="">
-                                <option selected>Seleccionar4</option>
-                                <option value="1">Presente</option>
-                                <option value="2">No Presente</option>
-                                <option value="3">Retardo</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
                 
                 <div class="text-center">
                     <button class="btn btn-primary fw-bolder text-uppercase" type="submit">Guardar Lista</button>
-                    <a class="btn btn-secondary fw-bolder text-uppercase" href="<?= $ruta_raiz ?>/view/user/index.php">Cancelar</a>
+                    <a class="btn btn-secondary fw-bolder text-uppercase" href="<?= $ruta_raiz ?>/view/user/user-profesor/misClases.php">Cancelar</a>
                 </div>
             </div>
         </div>

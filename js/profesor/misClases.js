@@ -10,7 +10,7 @@ $(document).ready(function () {
             let respuesta = JSON.parse(response);
             let datos = ``;
             respuesta.forEach(element => {
-               datos += `<a href="clase.php?cveAsignatura=${element['cveAsignatura']}" class="misClases btn btn-lg  ajustes">
+               datos += `<a href="clase.php?cveAsignatura=${element['cveImpa_Asig']}&cveProfesor=${element['cveProfesor']}" class="misClases btn btn-lg fs-5 ajustes">
                            ${element['cveCarrera']} - ${element['cveSemestre']}${element['cveModalidad']} - 
                            ${element['nombre_asignatura']} - ${element['fecha_inicio_semestre']}
                          </a>`;

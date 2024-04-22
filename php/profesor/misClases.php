@@ -7,8 +7,9 @@ include '../conexion.php';
 if (!empty($_SESSION["cvePersona"]) AND $_SESSION["user_profesor"]) {
 
     $respuesta = array();
+    $anio = "";
 
-    $sql = "SELECT cveAsignatura, cveCarrera, cveSemestre, cveModalidad, nombre_asignatura, fecha_inicio_semestre
+    $sql = "SELECT cveImpa_Asig, cveCarrera, cveSemestre, cveModalidad, nombre_asignatura, fecha_inicio_semestre
             FROM asignatura
             NATURAL JOIN impartir_asignatura
             NATURAL JOIN grupo
@@ -22,13 +23,17 @@ if (!empty($_SESSION["cvePersona"]) AND $_SESSION["user_profesor"]) {
         
         $result = $query -> get_result();
         while ($dato = $result -> fetch_object()) {
+
+            $anio = date("Y", strtotime($dato -> fecha_inicio_semestre));
+
             $respuesta[] = array(
-                "cveAsignatura" => $dato -> cveAsignatura,
+                "cveImpa_Asig" => $dato -> cveImpa_Asig,
+                "cveProfesor" => $_SESSION["cvePersona"],
                 "cveCarrera" => $dato -> cveCarrera,
                 "cveSemestre"  => $dato -> cveSemestre,
                 "cveModalidad"   => $dato -> cveModalidad,
                 "nombre_asignatura"   => $dato -> nombre_asignatura,
-                "fecha_inicio_semestre"   => $dato -> fecha_inicio_semestre
+                "fecha_inicio_semestre"   => $anio
             );
         }
         $query -> close();

@@ -11,6 +11,7 @@ if (isset($_POST)) {
         !empty($_POST["apellido_pa"]) AND
         !empty($_POST["apellido_ma"]) AND
         !empty($_POST["telefono"]) AND
+        !empty($_POST["rfc"]) AND
         !empty($_POST["correo"]) AND
         !empty($_POST["clave"])
     ) {
@@ -27,11 +28,12 @@ if (isset($_POST)) {
             $pa            = $_POST["apellido_pa"];
             $ma            = $_POST["apellido_ma"];
             $tel           = $_POST["telefono"];
+            $rfc           = $_POST["rfc"];
             $correo        = $_POST["correo"];
             $clave         = password_hash($_POST["clave"], PASSWORD_DEFAULT);
 
             // VALIDAR SI LA MATRICULA YA ESTA REGISTRADA CON UN USUARIO
-            $stmt = $conexion -> prepare("SELECT * FROM info_personal WHERE correo = ?");
+            $stmt = $conexion -> prepare("SELECT correo FROM personal_escolar WHERE correo = ?");
             $stmt -> bind_param("s", $correo);
             $stmt -> execute();
             $stmt -> store_result();
@@ -39,8 +41,8 @@ if (isset($_POST)) {
             if ($stmt -> num_rows == 0) { //No hay columnas, el profesor no existe
                 
                 //Procede a registrar un alumno
-                $stmt = $conexion -> prepare("CALL registrar_profesor (?, ?, ?, ?, ?, ?)");
-                $stmt -> bind_param("ssssss", $correo, $clave, $nombre, $pa, $ma, $tel);
+                $stmt = $conexion -> prepare("CALL registrar_profesor (?, ?, ?, ?, ?, ?, ?)");
+                $stmt -> bind_param("sssssss", $correo, $clave, $nombre, $pa, $ma, $tel, $rfc);
                 
                 if ($stmt -> execute()) {
                     print_r(105); // Registro exitoso
