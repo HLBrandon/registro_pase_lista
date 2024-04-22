@@ -24,7 +24,6 @@ drop table if exists user_admin;
 drop table if exists personal_oficina;
 drop table if exists personal_escolar;
 drop table if exists usuario;
-drop table if exists info_personal;
 drop table if exists area_itsmt;
 drop table if exists asis_presente; 
 drop table if exists grupo;
@@ -73,13 +72,6 @@ CREATE TABLE area_itsmt (
     PRIMARY KEY (cveArea)
 ) engine = InnoDB;
 
-CREATE TABLE info_personal (
-	cveInfoPersonal INT (10) not null auto_increment,
-    correo VARCHAR (255) NOT NULL,
-    contra VARCHAR (255) NOT NULL,
-    PRIMARY KEY (cveInfoPersonal)
-) engine = InnoDB;
-
 CREATE TABLE usuario (
 	cvePersona INT (10) not null auto_increment,
     nombre_persona VARCHAR (40) NOT NULL,
@@ -91,12 +83,11 @@ CREATE TABLE usuario (
 
  CREATE TABLE personal_escolar (
 	cvePersona INT (10) NOT NULL,
-    cveInfoPersonal INT (10) NOT NULL,
     RFC varchar (15),
+    correo VARCHAR (255) NOT NULL,
+    contra VARCHAR (255) NOT NULL,
     PRIMARY KEY (cvePersona),
     FOREIGN KEY (cvePersona) REFERENCES usuario (cvePersona)
-		on update cascade on delete cascade,
-    FOREIGN KEY (cveInfoPersonal) REFERENCES info_personal (cveInfoPersonal)
 		on update cascade on delete cascade
 ) engine = InnoDB;
 
@@ -205,11 +196,12 @@ CREATE TABLE usuario (
 
  create table asignatura_alumnos (
 	cveAsig_alum int (10) not null auto_increment,
-	cveAsignatura varchar (8) not null,
+	cveImpa_Asig int (10) not null,
     matricula varchar (9)  not null,
     fecha_inicio_semestre date not null,
+    fecha_fin_semestre date not null,
     primary key (cveAsig_alum),
-    foreign key (cveAsignatura) references asignatura (cveAsignatura)
+    foreign key (cveImpa_Asig) references impartir_asignatura (cveImpa_Asig)
 		on update cascade on delete cascade,
     foreign key (matricula) references estudiante (matricula)
 		on update cascade on delete cascade
@@ -218,13 +210,13 @@ CREATE TABLE usuario (
  create table asistencia (
 	cveAsistencia INT (10) NOT NULL auto_increment,
     cvePersona INT (10) NOT NULL,
-    cveAsignatura varchar (8) not null,
+    cveImpa_Asig int (10) not null,
     fecha_asistencia DATE not null,
     hora_asistencia time,
     primary key (cveAsistencia),
     foreign key (cvePersona) references profesor (cvePersona)
 		on update cascade on delete cascade,
-    foreign key (cveAsignatura) references asignatura (cveAsignatura)
+    foreign key (cveImpa_Asig) references impartir_asignatura (cveImpa_Asig)
 		on update cascade on delete cascade
  ) engine = InnoDB;
  
@@ -276,7 +268,7 @@ CREATE TABLE usuario (
     
     start transaction;
 		set autocommit = 0;
-        
+        #debo modificarlo
 		insert into info_personal (correo, contra) values (d_correo, d_clave);
 			set @id_info = last_insert_id();
         insert into usuario (nombre_persona, apellido_pa, apellido_ma, telefono) values (d_nombre, d_pa, d_ma, d_tel);
@@ -305,7 +297,7 @@ CREATE TABLE usuario (
     
     start transaction;
 		set autocommit = 0;
-        
+        #debo modificarlo
 		insert into info_personal (correo, contra) values (d_correo, d_clave);
 			set @id_info = last_insert_id();
         insert into usuario (nombre_persona, apellido_pa, apellido_ma, telefono) values (d_nombre, d_pa, d_ma, d_tel);
@@ -334,7 +326,7 @@ CREATE TABLE usuario (
     
     start transaction;
 		set autocommit = 0;
-        
+        #debo modificarlo
 		insert into info_personal (correo, contra) values (d_correo, d_clave);
 			set @id_info = last_insert_id();
         insert into usuario (nombre_persona, apellido_pa, apellido_ma, telefono) values (d_nombre, d_pa, d_ma, d_tel);
@@ -353,8 +345,8 @@ CREATE TABLE usuario (
  # PROCEDIMINETO registrar_profesor
  drop procedure if exists registrar_profesor;
  DELIMITER $$
- create procedure registrar_profesor ( IN d_correo varchar(100), d_clave varchar (100), 
-	d_nombre varchar (40), d_pa varchar (40), d_ma varchar (40), d_tel varchar (10) )
+ create procedure registrar_profesor ( IN d_correo varchar(255), d_clave varchar (255), 
+	d_nombre varchar (40), d_pa varchar (40), d_ma varchar (40), d_tel varchar (10), d_rfc varchar (15))
  begin
 	declare exit handler for sqlexception
     begin
@@ -363,12 +355,10 @@ CREATE TABLE usuario (
     
     start transaction;
 		set autocommit = 0;
-        
-		insert into info_personal (correo, contra) values (d_correo, d_clave);
-			set @id_info = last_insert_id();
+        #correo,clave,nombre,paterno,materno,tel,rfc
         insert into usuario (nombre_persona, apellido_pa, apellido_ma, telefono) values (d_nombre, d_pa, d_ma, d_tel);
 			set @id_user = last_insert_id();
-        insert into personal_escolar (cvePersona, cveInfoPersonal) values (@id_user, @id_info);
+        insert into personal_escolar (cvePersona, RFC, correo, contra) values (@id_user, d_rfc, d_correo, d_clave);
 			set @id_personal = last_insert_id();
         insert into profesor (cvePersona) values (@id_personal);
         
@@ -392,7 +382,7 @@ CREATE TABLE usuario (
     start transaction;
 		set autocommit = 0;
         
-		insert into asistencia (cvePersona, cveAsignatura, fecha_asistencia) values (d_Profesor, d_Asignatura, NOW());
+		insert into asistencia (cvePersona, cveImpa_Asig, fecha_asistencia, hora_asistencia) values (d_Profesor, d_Asignatura, NOW(), NOW());
 			set @id_asistencia = last_insert_id();
 		insert into detalle_asistencia (cveAsistencia, matricula, cvePresente) values (@id_asistencia, d_Estudiante, d_Presente);
         
@@ -426,7 +416,7 @@ CREATE TABLE usuario (
  end $$
  DELIMITER ;
   # FIN PROCEDIMINETO registrar_estudiante
-
+  
  -- ----------------------------------------------------------------------------------
   
  # PROCEDIMINETO para asignar al profesor una clase
@@ -450,6 +440,35 @@ CREATE TABLE usuario (
         set @fecha_fin = (SELECT DATE_ADD( (SELECT fecha_inicio_semestre FROM impartir_asignatura where cveImpa_Asig = @id_impartir), INTERVAL 5 MONTH));
         
         update impartir_asignatura set fecha_fin_semestre = @fecha_fin where cveImpa_Asig = @id_impartir;
+        
+        commit;
+ end $$
+ DELIMITER ;
+  # FIN PROCEDIMINETO para asignar al profesor una clase
+  
+ -- ----------------------------------------------------------------------------------
+  
+ # PROCEDIMINETO para asignar al profesor una clase
+ drop procedure if exists asignatura_alumnos;
+ DELIMITER $$
+ create procedure asignatura_alumnos ( IN d_cveClase INT, d_matricula varchar (9), d_fecha date)
+ begin
+	declare exit handler for sqlexception
+    begin
+		rollback;
+    end;
+    
+    start transaction;
+		set autocommit = 0;
+        
+        insert into asignatura_alumnos (cveImpa_Asig, matricula, fecha_inicio_semestre) values
+			(d_cveClase, d_matricula, d_fecha);
+		
+        set @id_impartir = last_insert_id();
+        
+        set @fecha_fin = (SELECT DATE_ADD( (SELECT fecha_inicio_semestre FROM asignatura_alumnos where cveAsig_alum = @id_impartir), INTERVAL 5 MONTH));
+        
+        update asignatura_alumnos set fecha_fin_semestre = @fecha_fin where cveAsig_alum = @id_impartir;
         
         commit;
  end $$
@@ -552,17 +571,11 @@ INSERT INTO `usuario` (`cvePersona`, `nombre_persona`, `apellido_pa`, `apellido_
 
 -- PROFESORES DE EJEMPLO
 
-INSERT INTO `info_personal` (`cveInfoPersonal`, `correo`, `contra`) VALUES
-(1, 'hlucas@example.com', '$2y$10$xNSpqz7kTFANzc02ung29OnxK7MaQirZlWtNS7KQs1e5wauhtZyhO'),
-(2, 'keila@example.com', '$2y$10$nc7mmG3RG//M6gK3cOpIq.zv3nr7rSqvRpdxpKr23JV9c.WQNd0X6'),
-(3, 'gerardo@example.com', '$2y$10$no2mGLWfN3x4G4WSFRupZ.BtlWfBEuEVC38eUeVkXzrKidL6aTnQG'),
-(4, 'franciscoJ@example.com', '$2y$10$EUjHwpTCeLeQ059EL1lCIO52ne1vRwiUSRsXOy0U0ikdW6.XNHnT6');
-
-INSERT INTO `personal_escolar` (`cvePersona`, `cveInfoPersonal`, `RFC`) VALUES
-(1, 1, "GOMC880326H50"),
-(2, 2, "GOMC880326H51"),
-(3, 3, "GOMC880326H52"),
-(4, 4, "GOMC880326H53");
+INSERT INTO `personal_escolar` (`cvePersona`, `RFC`, `correo`, `contra`) VALUES
+(1, "GOMC880326H50", 'hlucas@example.com', '$2y$10$xNSpqz7kTFANzc02ung29OnxK7MaQirZlWtNS7KQs1e5wauhtZyhO'),
+(2, "GOMC880326H51", 'keila@example.com', '$2y$10$nc7mmG3RG//M6gK3cOpIq.zv3nr7rSqvRpdxpKr23JV9c.WQNd0X6'),
+(3, "GOMC880326H52", 'gerardo@example.com', '$2y$10$no2mGLWfN3x4G4WSFRupZ.BtlWfBEuEVC38eUeVkXzrKidL6aTnQG'),
+(4, "GOMC880326H53", 'franciscoJ@example.com', '$2y$10$EUjHwpTCeLeQ059EL1lCIO52ne1vRwiUSRsXOy0U0ikdW6.XNHnT6');
 
 INSERT INTO `profesor` (`cvePersona`) VALUES
 (1),
