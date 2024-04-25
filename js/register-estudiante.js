@@ -17,7 +17,7 @@ $(document).ready(function () {
 
                 if (!response.error) {
                     let carrera = JSON.parse(response);
-                    let datos = `<option value="">Selecciona una Carrera</option>`;
+                    let datos = `<option value=""></option>`;
                     carrera.forEach(element => {
                         datos += `<select class='form-select border-3' name='select__carrera' id='select__carrera'>
                                      <option id = 'optionCarrera' value='${element['cveCarrera']}'>${element['nombre_carrera']}</option>

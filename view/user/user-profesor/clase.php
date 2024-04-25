@@ -19,7 +19,7 @@ if ($cveAsignatura == "" || $cveProfesor == "") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clase</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    
+
     <style>
         .contenedor {
             max-width: 1000px;
@@ -42,7 +42,7 @@ if ($cveAsignatura == "" || $cveProfesor == "") {
                     <div class="mb-3">
                         <label class="form-label" for="">Profesor</label>
                         <select class="form-select" name="select-profesor" disabled id="select-profesor">
-                            <option value="<?= $_SESSION["cvePersona"] ?>"><?= $_SESSION["cvePersona"] ?></option>
+                            <option value="" id="nombreProfesor"></option>
                         </select>
                     </div>
                 </div>
@@ -50,7 +50,7 @@ if ($cveAsignatura == "" || $cveProfesor == "") {
                     <div class="mb-3">
                         <label class="form-label" for="">Clase</label>
                         <select class="form-select" name="select-profesor" disabled id="select-clase">
-                            <option value="1">ISC-6A-2024</option>
+                            <option id="nombreAsignatura" value=""></option>
                         </select>
                     </div>
                 </div>
@@ -86,7 +86,7 @@ if ($cveAsignatura == "" || $cveProfesor == "") {
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="text-center">
                     <button class="btn btn-primary fw-bolder text-uppercase" type="submit">Guardar Lista</button>
                     <a class="btn btn-secondary fw-bolder text-uppercase" href="<?= $ruta_raiz ?>/view/user/user-profesor/misClases.php">Cancelar</a>
@@ -97,32 +97,8 @@ if ($cveAsignatura == "" || $cveProfesor == "") {
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="<?= $ruta_raiz ?>/js/profesor/clases.js"></script>
 
-    <script>
-
-        $(document).ready(function () {
-            
-            $(document).on('change', '.seleccionar-presencia', function (e) {
-                e.preventDefault();
-
-                let valor_presente = $(this).val();
-                let id_alumno = e.target.parentNode.parentNode.children[0].children[0].value;
-
-                const datos = {
-                    "cve_alumno" : id_alumno,
-                    "cve_presente" : valor_presente
-                }
-
-                console.log(datos);
-            });
-
-            
-        });
-
-
-    </script>
-    <script src="<?=$ruta_raiz?>/js/profesor/clases.js"></script>
-    
 </body>
 
 </html>
