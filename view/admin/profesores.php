@@ -62,7 +62,7 @@
 
     <?php include 'include/scripts.php'; ?>
     
-    <script src="<?= $ruta_raiz ?>js/admin/admin-registro-profesor.js"></script>
+    <script src="<?= $ruta_raiz ?>view/admin/js/admin-registro-profesor.js"></script>
 
 </body>
 

@@ -46,7 +46,7 @@
                     </div>
                     <div class="col-12 text-center">
                         <button class="btn btn-primary fw-bolder" type="submit" id="btnGuardar" name="btnGuardar">Guardar</button>
-                        <a class="cancelar btn  fw-bold" href="<?= $ruta_raiz ?>/view/user/user-personal/">Cancelar</a>
+                        <button type="button" class="btn btn-secondary fw-bolder" data-bs-dismiss="modal" aria-label="Close">Cerrar</button>
                     </div>
 
                 </form>
