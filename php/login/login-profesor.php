@@ -12,7 +12,7 @@ if (isset($_POST)) {
             
             $correo = $_POST["correoProfesor"];
 
-            $stmt = $conexion -> prepare("SELECT COUNT(*) FROM personal_escolar WHERE correo = ?");
+            $stmt = $conexion -> prepare("SELECT cvePersona FROM personal_escolar WHERE correo = ? AND status != 0");
             $stmt -> bind_param("s", $correo);
             $stmt -> execute();
             $stmt -> store_result();
@@ -21,7 +21,7 @@ if (isset($_POST)) {
 
                 $clave = $_POST["claveProfesor"];
                 
-                $login = $conexion -> prepare("SELECT cvePersona, contra FROM profesor NATURAL JOIN personal_escolar NATURAL JOIN usuario WHERE correo = ?");
+                $login = $conexion -> prepare("SELECT cvePersona, contra FROM profesor NATURAL JOIN personal_escolar NATURAL JOIN usuario WHERE correo = ? AND status != 0");
                 $login -> bind_param("s", $correo);
                 $login -> execute();
                 $resultados = $login -> get_result();

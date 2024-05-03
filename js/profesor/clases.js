@@ -3,6 +3,8 @@ $(document).ready(function () {
     const cveProfesor = urlParams.get('cveProfesor')
     const cveAsignatura = urlParams.get('cveAsignatura');
 
+    console.log(cveAsignatura);
+
 
     const rutaRaiz = "/pase_lista/";
 
@@ -25,7 +27,6 @@ $(document).ready(function () {
         }
     });
 
-
     $.ajax({
         type: "POST",
         url: rutaRaiz + "php/profesor/clase-asignatura.php",
@@ -33,11 +34,12 @@ $(document).ready(function () {
         success: function (response) {
             if (!response.error) {
                 let datosAsignatura = JSON.parse(response);
+                console.log(datosAsignatura);
 
-                $('#nombreAsignatura').empty();
+                $('#select-clase').empty();
 
                 $.each(datosAsignatura, function (index, item) {
-                    $('#nombreAsignatura').append($('<option>', {
+                    $('#select-clase').append($('<option>', {
                         value: item.cveImpa_Asig,
                         text: item.nombre_asignatura
                     }));
@@ -60,11 +62,11 @@ $(document).ready(function () {
                     <div class="bg-body-secondary p-3 rounded-3 mb-3">
                         <div class="row">
                             <div class="col-sm-6 my-auto">
-                                <input hidden value=" ${element['matricula']}" type="text" name="" id="">
+                                <input hidden value="${element['matricula']}" type="text">
                                 ${element['nombre_alumno']}
                             </div>
                             <div class="col-sm-6">
-                                <select class="form-select seleccionar-presencia" name="" id="matricula">
+                                <select class="form-select seleccionar-presencia" id="matricula">
                                     <option value="" selected>Seleccionar</option>
                                     <option value="1">Presente</option>
                                     <option value="2">No Presente</option>
@@ -83,6 +85,71 @@ $(document).ready(function () {
         }
     });
 
+    $(document).on("change", ".seleccionar-presencia", function (e) {
+        e.preventDefault();
+        let fila = e.target.parentNode.parentNode.children[0].children[0];
 
+        let matricula = fila.value;
+        let asistencia = $(this).val();
+
+        console.log(matricula);
+
+        let datos = {
+            "matricula" : matricula,
+            "asistencia" : asistencia
+        }
+
+        $.ajax({
+            type: "POST",
+            url: rutaRaiz + "php/profesor/llenar-asistencia.php",
+            data: datos,
+            success: function (response) {
+                console.log(response);
+            }
+        });
+    });
+
+    $("#btnGuardar").click(function (e) { 
+        e.preventDefault();
+
+        let idProfesor = $("#select-profesor").val();
+        let idClase = $("#select-clase").val();
+
+        let datos = {
+            "cvePersona" : idProfesor,
+            "cveImpa_Asig" : idClase
+        };
+
+        $.ajax({
+            type: "POST",
+            url: rutaRaiz + "php/profesor/pase_lista.php",
+            data: datos,
+            success: function (response) {
+                console.log(response);
+                if (!response.error) {
+                    let data = JSON.parse(response);
+
+                    if (data.status) {
+                        VanillaToasts.create({
+                            title: data.titulo,
+                            text: data.texto,
+                            type: data.tipo,
+                            icon: data.icono,
+                            timeout: 3000,
+                        });
+                    } else {
+                        VanillaToasts.create({
+                            title: data.titulo,
+                            text: data.texto,
+                            type: data.tipo,
+                            icon: data.icono,
+                            timeout: 3000,
+                        });
+                    }
+                    
+                }
+            }
+        });
+    });
 
 });

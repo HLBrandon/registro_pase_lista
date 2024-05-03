@@ -32,6 +32,7 @@ function loginProfesor() {
         url: "php/login/login-profesor.php",
         data: datosProfesor,
         success: function (response) {
+            console.log(response);
             if (!response.error) {
                 let respuesta = JSON.parse(response);
                 if (respuesta.status) {
@@ -39,8 +40,6 @@ function loginProfesor() {
                     setTimeout(function () {
                         window.location.href = "view/user/user-profesor/"
                     }, 1000);
-
-
                 } else {
 
                     VanillaToasts.create({

@@ -10,7 +10,7 @@ if (isset($_POST)) {
             JOIN estudiante es ON us.cvePersona = es.cvePersona
             JOIN asignatura_alumnos aa ON es.matricula = aa.matricula
             JOIN impartir_asignatura ia ON aa.cveImpa_Asig = ia.cveImpa_Asig
-            WHERE ia.cveImpa_Asig = $id";
+            WHERE ia.cveImpa_Asig = $id ORDER BY apellido_pa asc";
 
     $query = $conexion->query($sql);
 
