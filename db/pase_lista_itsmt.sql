@@ -46,6 +46,7 @@ CREATE TABLE modalidad (
 create table carrera (
 	cveCarrera VARCHAR(8)  NOT NULL,
     nombre_carrera VARCHAR (255) NOT NULL,
+    status int(2) NOT NULL DEFAULT 1,
     primary key (cveCarrera)
 ) engine = InnoDB;
 
@@ -86,6 +87,7 @@ CREATE TABLE usuario (
     RFC varchar (15),
     correo VARCHAR (255) NOT NULL,
     contra VARCHAR (255) NOT NULL,
+    status int(2) NOT NULL DEFAULT 1,
     PRIMARY KEY (cvePersona),
     FOREIGN KEY (cvePersona) REFERENCES usuario (cvePersona)
 		on update cascade on delete cascade
@@ -258,8 +260,8 @@ CREATE TABLE usuario (
  # PROCEDIMINETO registrar_admin
  drop procedure if exists registrar_admin;
  DELIMITER $$
- create procedure registrar_admin ( IN d_correo varchar(100), d_clave varchar (100), 
-	d_nombre varchar (40), d_pa varchar (40), d_ma varchar (40), d_tel varchar (10) )
+ create procedure registrar_admin ( IN d_correo varchar(255), d_clave varchar (255), 
+	d_nombre varchar (40), d_pa varchar (40), d_ma varchar (40), d_tel varchar (10), d_rfc varchar (15))
  begin
 	declare exit handler for sqlexception
     begin
@@ -268,12 +270,10 @@ CREATE TABLE usuario (
     
     start transaction;
 		set autocommit = 0;
-        #debo modificarlo
-		insert into info_personal (correo, contra) values (d_correo, d_clave);
-			set @id_info = last_insert_id();
+        #correo,clave,nombre,paterno,materno,tel,rfc
         insert into usuario (nombre_persona, apellido_pa, apellido_ma, telefono) values (d_nombre, d_pa, d_ma, d_tel);
 			set @id_user = last_insert_id();
-        insert into personal_escolar (cvePersona, cveInfoPersonal) values (@id_user, @id_info);
+        insert into personal_escolar (cvePersona, RFC, correo, contra) values (@id_user, d_rfc, d_correo, d_clave);
 			set @id_personal = last_insert_id();
         insert into user_admin (cvePersona) values (@id_personal);
         
@@ -287,8 +287,8 @@ CREATE TABLE usuario (
  # PROCEDIMINETO registrar_jefeCarrera
  drop procedure if exists registrar_jefeCarrera;
  DELIMITER $$
- create procedure registrar_jefeCarrera ( IN d_correo varchar(100), d_clave varchar (100), 
-	d_nombre varchar (40), d_pa varchar (40), d_ma varchar (40), d_tel varchar (10) )
+ create procedure registrar_jefeCarrera ( IN d_correo varchar(255), d_clave varchar (255), 
+	d_nombre varchar (40), d_pa varchar (40), d_ma varchar (40), d_tel varchar (10), d_rfc varchar (15))
  begin
 	declare exit handler for sqlexception
     begin
@@ -297,12 +297,10 @@ CREATE TABLE usuario (
     
     start transaction;
 		set autocommit = 0;
-        #debo modificarlo
-		insert into info_personal (correo, contra) values (d_correo, d_clave);
-			set @id_info = last_insert_id();
+        #correo,clave,nombre,paterno,materno,tel,rfc
         insert into usuario (nombre_persona, apellido_pa, apellido_ma, telefono) values (d_nombre, d_pa, d_ma, d_tel);
 			set @id_user = last_insert_id();
-        insert into personal_escolar (cvePersona, cveInfoPersonal) values (@id_user, @id_info);
+        insert into personal_escolar (cvePersona, RFC, correo, contra) values (@id_user, d_rfc, d_correo, d_clave);
 			set @id_personal = last_insert_id();
         insert into jefe_carrera (cvePersona) values (@id_personal);
         
