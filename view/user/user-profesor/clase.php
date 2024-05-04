@@ -19,6 +19,7 @@ if ($cveAsignatura == "" || $cveProfesor == "") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clase</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="<?= $ruta_raiz ?>/plugins/toasts/vanillatoasts.css">
 
     <style>
         .contenedor {
@@ -33,6 +34,7 @@ if ($cveAsignatura == "" || $cveProfesor == "") {
         <div class="bg-white p-2 rounded-2 my-3">
             <div class="text-center fw-bolder">
                 <h3>Asistencia</h3>
+                <?php print_r($_SESSION["pase_lista"]) ?>
             </div>
         </div>
         <div class="bg-white p-4 rounded-2 mb-3">
@@ -70,25 +72,12 @@ if ($cveAsignatura == "" || $cveProfesor == "") {
 
             <div class="">
 
-                <div class="bg-body-secondary p-3 rounded-3 mb-3">
-                    <div class="row">
-                        <div class="col-sm-6 my-auto">
-                            <input hidden value="1" type="text" name="" id="">
-                            Nombre Apellido Apellido 1
-                        </div>
-                        <div class="col-sm-6">
-                            <select class="form-select seleccionar-presencia" name="" id="">
-                                <option value="" selected>Seleccionar1</option>
-                                <option value="1">Presente</option>
-                                <option value="2">No Presente</option>
-                                <option value="3">Retardo</option>
-                            </select>
-                        </div>
-                    </div>
+                <div id="contenedor-alumnos">
+
                 </div>
 
                 <div class="text-center">
-                    <button class="btn btn-primary fw-bolder text-uppercase" type="submit">Guardar Lista</button>
+                    <button class="btn btn-primary fw-bolder text-uppercase" type="button" id="btnGuardar">Guardar Lista</button>
                     <a class="btn btn-secondary fw-bolder text-uppercase" href="<?= $ruta_raiz ?>/view/user/user-profesor/misClases.php">Cancelar</a>
                 </div>
             </div>
@@ -97,7 +86,8 @@ if ($cveAsignatura == "" || $cveProfesor == "") {
 
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="<?= $ruta_raiz ?>/js/profesor/clases.js"></script>
+    <script src="<?= $ruta_raiz ?>plugins/toasts/vanillatoasts.js"></script>
+    <script src="<?= $ruta_raiz ?>js/profesor/clases.js"></script>
 
 </body>
 

@@ -69,6 +69,7 @@ include '../../../config/global.php';
 
             <div class="text-end">
                 <a class="btn btn-success fw-bold text-uppercase" href="">Generar EXCEL</a>
+                <a class="btn btn-danger fw-bold text-uppercase" href="">Generar PDF</a>
             </div>
 
             <table class="table text-center">

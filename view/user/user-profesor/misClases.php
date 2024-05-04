@@ -2,6 +2,8 @@
 
 include '../../../config/global.php';
 
+unset($_SESSION["pase_lista"]);
+
 ?>
 
 <!doctype html>
