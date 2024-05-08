@@ -21,13 +21,37 @@
 
     <div class="container-fluid">
 
-        Cuerpo del contenido
+        <button class="btn btn-success mb-4 rounded-5 fw-bold text-uppercase" type="button" id="btnCrear">Crear</button>
+
+        <?php include 'modals/modal-admin.php'; ?>
+
+        <div class="table-responsive small">
+            <table class="table table-sm table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th>Telefono</th>
+                        <th>RFC</th>
+                        <th class="text-center">Estado</th>
+                        <th class="text-center">Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpo_tabla">
+
+                </tbody>
+            </table>
+
+        </div>
 
     </div>
 
     <?php include 'include/footer.php'; ?>
 
     <?php include 'include/scripts.php'; ?>
+
+    <script src="<?= $ruta_raiz ?>view/admin/js/admin-registro.js"></script>
 
 </body>
 

@@ -4,24 +4,23 @@ $(document).ready(function () {
     //const ruta_raiz = '//' + window.location.host + '/';
     const ruta_raiz = '/pase_lista/';
 
-    listar_profesor();
+    listar_carrera();
 
-    function listar_profesor() {
+    // Funcion para listar la carrera
+    function listar_carrera() {
         $.ajax({
             type: "GET",
-            url: ruta_raiz + "php/admi/listar_profesor.php",
+            url: ruta_raiz + "php/admi/listar_carrera.php",
             success: function (response) {
                 if (!response.error) {
                     let datos = JSON.parse(response);
                     let temp = "";
+                    console.log(datos);
                     datos.forEach(element => {
                         temp += `
                             <tr>
-                                <td>${element["cvePersona"]}</td>
-                                <td>${element["nombre"]}</td>
-                                <td>${element["correo"]}</td>
-                                <td>${element["telefono"]}</td>
-                                <td>${element["rfc"]}</td>
+                                <td>${element["cveCarrera"]}</td>
+                                <td>${element["nombre_carrera"]}</td>
                                 <td class="text-center">${(element["status"] == 1) ? '<span class="badge text-bg-success">Activo</span>' : '<span class="badge text-bg-danger">Inactivo</span>'}</td>
                                 <td class="text-center">
                                     <button class="btn btn-primary btnEditar">Editar</button>
@@ -31,13 +30,13 @@ $(document).ready(function () {
                         `;
                     });
 
-                    $("#cuerpo_tabla_profesor").html(temp);
+                    $("#cuerpo_tabla").html(temp);
                 }
             }
         });
     }
 
-    const modal = new bootstrap.Modal(document.getElementById('ProfesorModal'));
+    const modal = new bootstrap.Modal(document.getElementById('carreraModal'));
 
     validarCampo("#nombre_usuario", 2, "#alert_nombre", validarNombre);
     validarCampo("#apellido_pa", 2, "#alerta_paterno", validarApellido);
@@ -113,7 +112,7 @@ $(document).ready(function () {
 
     $("#btnCrear").click(function (e) {
         e.preventDefault();
-        $("#ProfesorModalLabel").html("Registrar Profesor");
+        $("#carreraModalLabel").html("Registrar Ingeniería");
         $("#btnGuardar").html("Registrar");
         $("#form__registro").trigger("reset");
         resetearCampos();
@@ -123,17 +122,19 @@ $(document).ready(function () {
 
     $(document).on("click", ".btnEditar", function (e) {
         e.preventDefault();
-        $("#ProfesorModalLabel").html("Editar Profesor");
+        $("#carreraModalLabel").html("Editar Ingeniería");
         $("#btnGuardar").html("Guardar");
 
         let fila = e.target.parentNode.parentNode;
-        let id_profesor = fila.children[0].innerHTML;
-        console.log(id_profesor);
+        let id_carrera = fila.children[0].innerHTML;
+        console.log(id_carrera);
+
+        resetearCampos();
 
         $.ajax({
             type: "POST",
-            url: ruta_raiz + "php/admi/optener_profesor.php",
-            data: { id_profesor },
+            url: ruta_raiz + "php/admi/optener-carrera.php",
+            data: { id_carrera },
             success: function (response) {
                 console.log(response);
                 if (!response.error) {
@@ -191,7 +192,7 @@ $(document).ready(function () {
                                 timer: 2000,
                                 timerProgressBar: true
                             });
-                            listar_profesor();
+                            listar_carrera();
                         }
                     }
                 });
@@ -237,7 +238,7 @@ $(document).ready(function () {
                                 timer: 2000,
                                 timerProgressBar: true
                             });
-                            listar_profesor();
+                            listar_carrera();
                         }
                     }
                 });
@@ -266,41 +267,39 @@ $(document).ready(function () {
                     var formulario = new FormData(this);
                     $.ajax({
                         type: "POST",
-                        url: ruta_raiz + "php/insert/registrar-profesor.php",
+                        url: ruta_raiz + "php/admi/registrar-carrera.php",
                         data: formulario,
                         contentType: false,
                         processData: false,
                         success: function (response) {
                             if (!response.error) {
-                                if (response == 105) {
+                                let data = JSON.parse(response);
+                                if (data.status) {
                                     Swal.fire({
                                         position: "center",
-                                        icon: "success",
-                                        title: "EXITO",
-                                        text: "Usuario registrado correctamente",
+                                        icon: data.icono,
+                                        title: data.titulo,
+                                        text: data.texto,
                                         showConfirmButton: false,
                                         timer: 2000,
                                         timerProgressBar: true
                                     });
 
-                                    listar_profesor();
-
-                                    modal.hide();
-
-                                } else if (response == 102) {
-                                    Swal.fire({
-                                        position: "center",
-                                        icon: "info",
-                                        title: "YA EXISTE",
-                                        text: "Este usuario ya existe",
-                                        showConfirmButton: false,
-                                        timer: 2000,
-                                        timerProgressBar: true
-                                    });
+                                    listar_carrera();
                                     $("#form__registro").trigger("reset");
-
+                                    resetearCampos();
+                                    modal.hide();
+                                } else {
+                                    Swal.fire({
+                                        position: "center",
+                                        icon: data.icono,
+                                        title: data.titulo,
+                                        text: data.texto,
+                                        showConfirmButton: false,
+                                        timer: 2000,
+                                        timerProgressBar: true
+                                    });
                                 }
-                                resetearCampos();
                             }
                         }
                     });
@@ -348,7 +347,7 @@ $(document).ready(function () {
                     var formulario = new FormData(this);
                     $.ajax({
                         type: "POST",
-                        url: ruta_raiz + "php/insert/editar-profesor.php",
+                        url: ruta_raiz + "php/admi/editar-carrera.php",
                         data: formulario,
                         contentType: false,
                         processData: false,
@@ -371,7 +370,7 @@ $(document).ready(function () {
                                     $("#form__registro").trigger("reset");
                                     resetearCampos();
                                     modal.hide();
-                                    listar_profesor();
+                                    listar_carrera();
                                 } else {
                                     Swal.fire({
                                         position: "center",

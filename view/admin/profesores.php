@@ -34,22 +34,11 @@
                         <th>Correo</th>
                         <th>Telefono</th>
                         <th>RFC</th>
+                        <th class="text-center">Estado</th>
                         <th class="text-center">Acción</th>
                     </tr>
                 </thead>
                 <tbody id="cuerpo_tabla_profesor">
-
-                    <tr>
-                        <td>1</td>
-                        <td>Brandon</td>
-                        <td>brandon@ejemplo.com</td>
-                        <td>HELB030517HVZRPRA4</td>
-                        <td>2321112233</td>
-                        <td class="text-center">
-                            <button class="btn btn-primary" id="btnEditar">Editar</button>
-                            <button class="btn btn-danger">Eliminar</button>
-                        </td>
-                    </tr>
 
                 </tbody>
             </table>

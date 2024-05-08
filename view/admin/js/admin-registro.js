@@ -4,12 +4,12 @@ $(document).ready(function () {
     //const ruta_raiz = '//' + window.location.host + '/';
     const ruta_raiz = '/pase_lista/';
 
-    listar_profesor();
+    listar_admin();
 
-    function listar_profesor() {
+    function listar_admin() {
         $.ajax({
             type: "GET",
-            url: ruta_raiz + "php/admi/listar_profesor.php",
+            url: ruta_raiz + "php/admi/listar_admin.php",
             success: function (response) {
                 if (!response.error) {
                     let datos = JSON.parse(response);
@@ -31,13 +31,13 @@ $(document).ready(function () {
                         `;
                     });
 
-                    $("#cuerpo_tabla_profesor").html(temp);
+                    $("#cuerpo_tabla").html(temp);
                 }
             }
         });
     }
 
-    const modal = new bootstrap.Modal(document.getElementById('ProfesorModal'));
+    const modal = new bootstrap.Modal(document.getElementById('AdminModal'));
 
     validarCampo("#nombre_usuario", 2, "#alert_nombre", validarNombre);
     validarCampo("#apellido_pa", 2, "#alerta_paterno", validarApellido);
@@ -113,7 +113,7 @@ $(document).ready(function () {
 
     $("#btnCrear").click(function (e) {
         e.preventDefault();
-        $("#ProfesorModalLabel").html("Registrar Profesor");
+        $("#AdminModalLabel").html("Registrar Administrador");
         $("#btnGuardar").html("Registrar");
         $("#form__registro").trigger("reset");
         resetearCampos();
@@ -123,17 +123,19 @@ $(document).ready(function () {
 
     $(document).on("click", ".btnEditar", function (e) {
         e.preventDefault();
-        $("#ProfesorModalLabel").html("Editar Profesor");
+        $("#AdminModalLabel").html("Editar Administrador");
         $("#btnGuardar").html("Guardar");
 
         let fila = e.target.parentNode.parentNode;
-        let id_profesor = fila.children[0].innerHTML;
-        console.log(id_profesor);
+        let id_admin = fila.children[0].innerHTML;
+        console.log(id_admin);
+
+        resetearCampos();
 
         $.ajax({
             type: "POST",
-            url: ruta_raiz + "php/admi/optener_profesor.php",
-            data: { id_profesor },
+            url: ruta_raiz + "php/admi/optener-admin.php",
+            data: { id_admin },
             success: function (response) {
                 console.log(response);
                 if (!response.error) {
@@ -191,7 +193,7 @@ $(document).ready(function () {
                                 timer: 2000,
                                 timerProgressBar: true
                             });
-                            listar_profesor();
+                            listar_admin();
                         }
                     }
                 });
@@ -237,7 +239,7 @@ $(document).ready(function () {
                                 timer: 2000,
                                 timerProgressBar: true
                             });
-                            listar_profesor();
+                            listar_admin();
                         }
                     }
                 });
@@ -266,41 +268,39 @@ $(document).ready(function () {
                     var formulario = new FormData(this);
                     $.ajax({
                         type: "POST",
-                        url: ruta_raiz + "php/insert/registrar-profesor.php",
+                        url: ruta_raiz + "php/admi/registrar-admin.php",
                         data: formulario,
                         contentType: false,
                         processData: false,
                         success: function (response) {
                             if (!response.error) {
-                                if (response == 105) {
+                                let data = JSON.parse(response);
+                                if (data.status) {
                                     Swal.fire({
                                         position: "center",
-                                        icon: "success",
-                                        title: "EXITO",
-                                        text: "Usuario registrado correctamente",
+                                        icon: data.icono,
+                                        title: data.titulo,
+                                        text: data.texto,
                                         showConfirmButton: false,
                                         timer: 2000,
                                         timerProgressBar: true
                                     });
 
-                                    listar_profesor();
-
-                                    modal.hide();
-
-                                } else if (response == 102) {
-                                    Swal.fire({
-                                        position: "center",
-                                        icon: "info",
-                                        title: "YA EXISTE",
-                                        text: "Este usuario ya existe",
-                                        showConfirmButton: false,
-                                        timer: 2000,
-                                        timerProgressBar: true
-                                    });
+                                    listar_admin();
                                     $("#form__registro").trigger("reset");
-
+                                    resetearCampos();
+                                    modal.hide();
+                                } else {
+                                    Swal.fire({
+                                        position: "center",
+                                        icon: data.icono,
+                                        title: data.titulo,
+                                        text: data.texto,
+                                        showConfirmButton: false,
+                                        timer: 2000,
+                                        timerProgressBar: true
+                                    });
                                 }
-                                resetearCampos();
                             }
                         }
                     });
@@ -348,7 +348,7 @@ $(document).ready(function () {
                     var formulario = new FormData(this);
                     $.ajax({
                         type: "POST",
-                        url: ruta_raiz + "php/insert/editar-profesor.php",
+                        url: ruta_raiz + "php/admi/editar-admin.php",
                         data: formulario,
                         contentType: false,
                         processData: false,
@@ -371,7 +371,7 @@ $(document).ready(function () {
                                     $("#form__registro").trigger("reset");
                                     resetearCampos();
                                     modal.hide();
-                                    listar_profesor();
+                                    listar_admin();
                                 } else {
                                     Swal.fire({
                                         position: "center",

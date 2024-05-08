@@ -4,12 +4,12 @@ $(document).ready(function () {
     //const ruta_raiz = '//' + window.location.host + '/';
     const ruta_raiz = '/pase_lista/';
 
-    listar_profesor();
+    listar_jefe();
 
-    function listar_profesor() {
+    function listar_jefe() {
         $.ajax({
             type: "GET",
-            url: ruta_raiz + "php/admi/listar_profesor.php",
+            url: ruta_raiz + "php/admi/listar_jefe.php",
             success: function (response) {
                 if (!response.error) {
                     let datos = JSON.parse(response);
@@ -31,13 +31,13 @@ $(document).ready(function () {
                         `;
                     });
 
-                    $("#cuerpo_tabla_profesor").html(temp);
+                    $("#cuerpo_tabla").html(temp);
                 }
             }
         });
     }
 
-    const modal = new bootstrap.Modal(document.getElementById('ProfesorModal'));
+    const modal = new bootstrap.Modal(document.getElementById('jefeModal'));
 
     validarCampo("#nombre_usuario", 2, "#alert_nombre", validarNombre);
     validarCampo("#apellido_pa", 2, "#alerta_paterno", validarApellido);
@@ -113,7 +113,7 @@ $(document).ready(function () {
 
     $("#btnCrear").click(function (e) {
         e.preventDefault();
-        $("#ProfesorModalLabel").html("Registrar Profesor");
+        $("#jefeModalLabel").html("Registrar Jefe de Carrera");
         $("#btnGuardar").html("Registrar");
         $("#form__registro").trigger("reset");
         resetearCampos();
@@ -123,17 +123,19 @@ $(document).ready(function () {
 
     $(document).on("click", ".btnEditar", function (e) {
         e.preventDefault();
-        $("#ProfesorModalLabel").html("Editar Profesor");
+        $("#jefeModalLabel").html("Editar Jefe de Carrera");
         $("#btnGuardar").html("Guardar");
 
         let fila = e.target.parentNode.parentNode;
-        let id_profesor = fila.children[0].innerHTML;
-        console.log(id_profesor);
+        let id_jefe = fila.children[0].innerHTML;
+        console.log(id_jefe);
+
+        resetearCampos();
 
         $.ajax({
             type: "POST",
-            url: ruta_raiz + "php/admi/optener_profesor.php",
-            data: { id_profesor },
+            url: ruta_raiz + "php/admi/optener-jefe.php",
+            data: { id_jefe },
             success: function (response) {
                 console.log(response);
                 if (!response.error) {
@@ -191,7 +193,7 @@ $(document).ready(function () {
                                 timer: 2000,
                                 timerProgressBar: true
                             });
-                            listar_profesor();
+                            listar_jefe();
                         }
                     }
                 });
@@ -237,7 +239,7 @@ $(document).ready(function () {
                                 timer: 2000,
                                 timerProgressBar: true
                             });
-                            listar_profesor();
+                            listar_jefe();
                         }
                     }
                 });
@@ -266,41 +268,39 @@ $(document).ready(function () {
                     var formulario = new FormData(this);
                     $.ajax({
                         type: "POST",
-                        url: ruta_raiz + "php/insert/registrar-profesor.php",
+                        url: ruta_raiz + "php/admi/registrar-jefe.php",
                         data: formulario,
                         contentType: false,
                         processData: false,
                         success: function (response) {
                             if (!response.error) {
-                                if (response == 105) {
+                                let data = JSON.parse(response);
+                                if (data.status) {
                                     Swal.fire({
                                         position: "center",
-                                        icon: "success",
-                                        title: "EXITO",
-                                        text: "Usuario registrado correctamente",
+                                        icon: data.icono,
+                                        title: data.titulo,
+                                        text: data.texto,
                                         showConfirmButton: false,
                                         timer: 2000,
                                         timerProgressBar: true
                                     });
 
-                                    listar_profesor();
-
-                                    modal.hide();
-
-                                } else if (response == 102) {
-                                    Swal.fire({
-                                        position: "center",
-                                        icon: "info",
-                                        title: "YA EXISTE",
-                                        text: "Este usuario ya existe",
-                                        showConfirmButton: false,
-                                        timer: 2000,
-                                        timerProgressBar: true
-                                    });
+                                    listar_jefe();
                                     $("#form__registro").trigger("reset");
-
+                                    resetearCampos();
+                                    modal.hide();
+                                } else {
+                                    Swal.fire({
+                                        position: "center",
+                                        icon: data.icono,
+                                        title: data.titulo,
+                                        text: data.texto,
+                                        showConfirmButton: false,
+                                        timer: 2000,
+                                        timerProgressBar: true
+                                    });
                                 }
-                                resetearCampos();
                             }
                         }
                     });
@@ -348,7 +348,7 @@ $(document).ready(function () {
                     var formulario = new FormData(this);
                     $.ajax({
                         type: "POST",
-                        url: ruta_raiz + "php/insert/editar-profesor.php",
+                        url: ruta_raiz + "php/admi/editar-jefe.php",
                         data: formulario,
                         contentType: false,
                         processData: false,
@@ -371,7 +371,7 @@ $(document).ready(function () {
                                     $("#form__registro").trigger("reset");
                                     resetearCampos();
                                     modal.hide();
-                                    listar_profesor();
+                                    listar_jefe();
                                 } else {
                                     Swal.fire({
                                         position: "center",

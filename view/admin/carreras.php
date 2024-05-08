@@ -16,24 +16,21 @@
     <?php include 'include/header.php'; ?>
 
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Jefes de Carrera</h1>
+        <h1 class="h2">Ingenierías ITSMT</h1>
     </div>
 
-    <div class="container-fluid">
+    <div class="container-fluid mb-4">
 
         <button class="btn btn-success mb-4 rounded-5 fw-bold text-uppercase" type="button" id="btnCrear">Crear</button>
 
-        <?php include 'modals/modal-jefe.php'; ?>
+        <?php include 'modals/modal-carrera.php'; ?>
 
         <div class="table-responsive small">
             <table class="table table-sm table-striped">
                 <thead>
                     <tr>
-                        <th>#</th>
-                        <th>Nombre</th>
-                        <th>Correo</th>
-                        <th>Telefono</th>
-                        <th>RFC</th>
+                        <th>Clave</th>
+                        <th>Nombre de la Ingeniería</th>
                         <th class="text-center">Estado</th>
                         <th class="text-center">Acción</th>
                     </tr>
@@ -42,16 +39,19 @@
 
                 </tbody>
             </table>
-
         </div>
 
+    </div>
+
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Jefes</h1>
     </div>
 
     <?php include 'include/footer.php'; ?>
 
     <?php include 'include/scripts.php'; ?>
 
-    <script src="<?= $ruta_raiz ?>view/admin/js/admin-registro-jefe.js"></script>
+    <script src="<?= $ruta_raiz ?>view/admin/js/admin-registro-carrera.js"></script>
 
 
 

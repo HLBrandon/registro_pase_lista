@@ -2,6 +2,7 @@
 
 include '../../../config/global.php';
 
+
 $cveAsignatura = (!empty($_GET["cveAsignatura"])) ? $_GET["cveAsignatura"] : "";
 $cveProfesor = (!empty($_GET["cveProfesor"])) ? $_GET["cveProfesor"] : "";
 
@@ -34,7 +35,9 @@ if ($cveAsignatura == "" || $cveProfesor == "") {
         <div class="bg-white p-2 rounded-2 my-3">
             <div class="text-center fw-bolder">
                 <h3>Asistencia</h3>
-                <?php print_r($_SESSION["pase_lista"]) ?>
+                <?php
+                print_r($_SESSION["pase_lista"]);
+                ?>
             </div>
         </div>
         <div class="bg-white p-4 rounded-2 mb-3">

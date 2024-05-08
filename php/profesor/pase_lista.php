@@ -24,7 +24,7 @@ if (isset($_POST)) {
                     $total_alumnos = $dato->total;
                     if ($total_alumnos == $num_pase) {
                         $sql = "INSERT INTO asistencia (cvePersona, cveImpa_Asig, fecha_asistencia, hora_asistencia)
-                    VALUES (?,?,NOW(),NOW())";
+                                VALUES (?,?,NOW(),NOW())";
                         $stmt = $conexion->prepare($sql);
                         $stmt->bind_param("ss", $cvePersona, $cveImpa_Asig);
 
@@ -33,12 +33,12 @@ if (isset($_POST)) {
 
                             foreach ($_SESSION["pase_lista"] as $key => $value) {
                                 $sql = "INSERT INTO detalle_asistencia (cveAsistencia, matricula, cvePresente)
-                            VALUES (?,?,?)";
+                                        VALUES (?,?,?)";
                                 $stmt = $conexion->prepare($sql);
                                 $stmt->bind_param("sss", $cveAsistencia, $value["matricula"], $value["asistencia"]);
                                 $stmt->execute();
                             }
-                            $conexion->commit();
+
                             unset($_SESSION["pase_lista"]);
 
                             $respuesta = array(
@@ -97,4 +97,7 @@ if (isset($_POST)) {
 
     $json = json_encode($respuesta, JSON_UNESCAPED_UNICODE); //PERMITE EL USO DE ACENTOS
     print_r($json);
+
+    $stmt->close();
+    $conexion->close();
 }
