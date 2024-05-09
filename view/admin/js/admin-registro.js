@@ -44,6 +44,7 @@ $(document).ready(function () {
     validarCampo("#apellido_ma", 2, "#alerta_materno", validarApellido);
     validarCampo("#correo", 10, "#alerta_correo", validarCorreo);
     validarCampo("#clave", 10, "#alerta_clave", validarPassword);
+    validarCampo("#rfc", 13, "#alerta_rfc", validarRFC);
 
     function validarCampo(selector, tamaño, idSpan, validar) {
         $(selector).blur(function (e) {
@@ -441,6 +442,10 @@ $(document).ready(function () {
         return validar.test(clave);
     }
 
+    function validarRFC(clave) {
+        var validar = /^([A-ZÑ&]{3,4}) ?(?:- ?)?(\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])) ?(?:- ?)?([A-Z\d]{2})([A\d])$/;
+        return validar.test(clave);
+    }
 
 
 });
