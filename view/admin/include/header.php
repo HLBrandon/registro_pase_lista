@@ -64,16 +64,6 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center gap-2" href="#">
-                                Last quarter
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link d-flex align-items-center gap-2" href="#">
-                                Social engagement
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link d-flex align-items-center gap-2" href="<?= $ruta_raiz ?>view/admin/backup.php">
                                 Respaldo
                             </a>

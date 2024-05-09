@@ -19,12 +19,6 @@
                         <input type="text" class="form-control border-3" name="nombre_carrera" id="nombre_carrera" placeholder="Nombre">
                         <span id="alerta_paterno"></span>
                     </div>
-                    <div class="mb-3">
-                        <label for="nombre_carrera" class="form-label">Jefe de Carrera (Opcional)</label>
-                        <select class="form-select" id="select-jefe" name="select-jefe">
-                            
-                        </select>
-                    </div>
 
                     <div class="text-center mb-3">
                         <span>* Campos obligatorios</span>
