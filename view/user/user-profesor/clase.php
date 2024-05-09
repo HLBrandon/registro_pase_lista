@@ -36,7 +36,7 @@ if ($cveAsignatura == "" || $cveProfesor == "") {
             <div class="text-center fw-bolder">
                 <h3>Asistencia</h3>
                 <?php
-                print_r($_SESSION["pase_lista"]);
+                unset($_SESSION["pase_lista"]);
                 ?>
             </div>
         </div>

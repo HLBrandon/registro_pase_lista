@@ -108,16 +108,16 @@ $(document).ready(function () {
 
     $("#btnGuardar").click(function (e) {
         e.preventDefault();
-    
+
         let camposNoSeleccionados = false;
-    
+
         $(".seleccionar-presencia").each(function () {
             if ($(this).val() === "") {
                 camposNoSeleccionados = true;
                 return false;
             }
         });
-    
+
         if (camposNoSeleccionados) {
             VanillaToasts.create({
                 title: "ADVERTENCIA!!",
@@ -126,18 +126,18 @@ $(document).ready(function () {
                 icon: rutaRaiz + "plugins/toasts/icons/icon_info.png",
                 timeout: 3000,
             });
-    
+
             return;
         }
-    
+
         let idProfesor = $("#select-profesor").val();
         let idClase = $("#select-clase").val();
-    
+
         let datos = {
             "cvePersona": idProfesor,
             "cveImpa_Asig": idClase
         };
-    
+
         $.ajax({
             type: "POST",
             url: rutaRaiz + "php/profesor/pase_lista.php",
@@ -145,9 +145,8 @@ $(document).ready(function () {
             success: function (response) {
                 if (!response.error) {
                     let data = JSON.parse(response);
-    
+
                     if (data.status) {
-                        window.location.reload(Swal.close());
                         VanillaToasts.create({
                             title: data.titulo,
                             text: data.texto,
@@ -155,6 +154,9 @@ $(document).ready(function () {
                             icon: data.icono,
                             timeout: 3000,
                         });
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 3050);
                     } else {
                         VanillaToasts.create({
                             title: data.titulo,
@@ -168,5 +170,5 @@ $(document).ready(function () {
             }
         });
     });
-    
+
 });
