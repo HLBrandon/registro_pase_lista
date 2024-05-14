@@ -67,7 +67,21 @@ include('config/global.php');
                         <div id="acceso-personal"></div>
                     </form>
                 </div>
-
+                <!--  FORMULARIO DE ACCESO PARA JEFE -->
+                <div class="tab-pane fade" id="nav-jefe" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+                    <form method="post" id="iniciar-sesion-jefe">
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control rounded-3" id="correoJefe" placeholder="@email.com">
+                            <label for="correoJefe">Correo electronico</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="password" class="form-control rounded-3" id="claveJefe" placeholder="Contraseña">
+                            <label for="claveJefe">Contraseña</label>
+                        </div>
+                        <button class="iniciar w-100 mb-2 btn btn-lg rounded-3 " type="submit">Iniciar sesión</button>
+                        <div id="acceso-jefe"></div>
+                    </form>
+                </div>
 
                 <!--  FORMULARIO DE ACCESO PARA ADMIN -->
                 <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab" tabindex="0">

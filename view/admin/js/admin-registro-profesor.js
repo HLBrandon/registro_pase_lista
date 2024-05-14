@@ -24,8 +24,8 @@ $(document).ready(function () {
                                 <td>${element["rfc"]}</td>
                                 <td class="text-center">${(element["status"] == 1) ? '<span class="badge text-bg-success">Activo</span>' : '<span class="badge text-bg-danger">Inactivo</span>'}</td>
                                 <td class="text-center">
-                                    <button class="btn btn-primary btnEditar">Editar</button>
-                                    ${(element["status"] == 1) ? '<button class="btn btn-danger btnEliminar">Eliminar</button>' : '<button class="btn btn-success btnActivar">Activar</button>'}
+                                    <button class="btn btn-sm btn-primary btnEditar">Editar</button>
+                                    ${(element["status"] == 1) ? '<button class="btn btn-sm btn-danger btnEliminar">Eliminar</button>' : '<button class="btn btn-sm btn-success btnActivar">Activar</button>'}
                                 </td>
                             </tr>
                         `;
@@ -44,7 +44,7 @@ $(document).ready(function () {
     validarCampo("#apellido_ma", 2, "#alerta_materno", validarApellido);
     validarCampo("#correo", 10, "#alerta_correo", validarCorreo);
     validarCampo("#clave", 10, "#alerta_clave", validarPassword);
-    validarCampo("#rfc", "#alerta_rfc", 13, validarRFC);
+    validarCampo("#rfc", 13, "#alerta_rfc", validarRFC);
 
     function validarCampo(selector, tamaño, idSpan, validar) {
         $(selector).blur(function (e) {
@@ -105,19 +105,19 @@ $(document).ready(function () {
     //FUNCION PARA BORRAR CLASES DE LOS INPUT
     function resetearCampos() {
         // Restablecer campos de texto
-        $("#nombre_usuario, #apellido_pa, #apellido_ma, #telefono, #correo, #clave").removeClass('border-success is-valid border-danger is-invalid');
-        $("#nombre_usuario, #apellido_pa, #apellido_ma, #telefono, #correo, #clave").val('');
+        $("#nombre_usuario, #apellido_pa, #apellido_ma, #telefono, #correo, #clave, #rfc").removeClass('border-success is-valid border-danger is-invalid');
+        $("#nombre_usuario, #apellido_pa, #apellido_ma, #telefono, #correo, #clave, #rfc").val('');
         // Restablecer mensajes de alerta
-        $("#alert_nombre, #alerta_paterno, #alerta_materno, #alerta_telefono, #alerta_correo, #alerta_clave").html('');
-        $("#alert_nombre, #alerta_paterno, #alerta_materno, #alerta_telefono, #alerta_correo, #alerta_clave").removeClass('invalid-feedback');
+        $("#alert_nombre, #alerta_paterno, #alerta_materno, #alerta_telefono, #alerta_correo, #alerta_clave, #alerta_rfc").html('');
+        $("#alert_nombre, #alerta_paterno, #alerta_materno, #alerta_telefono, #alerta_correo, #alerta_clave, #alerta_rfc").removeClass('invalid-feedback');
     }
 
     $("#btnCrear").click(function (e) {
         e.preventDefault();
+        resetearCampos();
         $("#ProfesorModalLabel").html("Registrar Profesor");
         $("#btnGuardar").html("Registrar");
         $("#form__registro").trigger("reset");
-        resetearCampos();
         modal.show();
         opcion = 1;
     });
@@ -126,7 +126,7 @@ $(document).ready(function () {
         e.preventDefault();
         $("#ProfesorModalLabel").html("Editar Profesor");
         $("#btnGuardar").html("Guardar");
-
+        resetearCampos();
         let fila = e.target.parentNode.parentNode;
         let id_profesor = fila.children[0].innerHTML;
         console.log(id_profesor);
@@ -189,7 +189,7 @@ $(document).ready(function () {
                                 title: dato.titulo,
                                 text: dato.texto,
                                 showConfirmButton: false,
-                                timer: 2000,
+                                timer: 1500,
                                 timerProgressBar: true
                             });
                             listar_profesor();
@@ -236,7 +236,7 @@ $(document).ready(function () {
                                 title: dato.titulo,
                                 text: dato.texto,
                                 showConfirmButton: false,
-                                timer: 2000,
+                                timer: 1500,
                                 timerProgressBar: true
                             });
                             listar_profesor();

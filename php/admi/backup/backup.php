@@ -4,9 +4,9 @@ date_default_timezone_set('America/Mexico_City');
 
 $db_name = 'pase_lista_itsmt';
 
-$backup_file = 'backup_' . date('Y-m-d-H-i-s') . '.sql';
+$backup_file = 'backup_' . date('d-m-Y_H.i') . '.sql';
 
-$comando = "mysqldump -u root -h localhost $db_name>$backup_file";
+$comando = "mysqldump -u root -h localhost --add-drop-database --databases --routines $db_name>$backup_file";
 
 exec($comando);
 

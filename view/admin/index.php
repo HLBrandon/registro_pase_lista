@@ -23,13 +23,30 @@
 
         Cuerpo del contenido
 
+        <div class="table-responsive small">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nombre</th>
+                        <th>Correo</th>
+                        <th class="text-center">Online</th>
+                    </tr>
+                </thead>
+                <tbody id="cuerpo_tabla">
+
+                </tbody>
+            </table>
+
+        </div>
+
     </div>
 
     <?php include 'include/footer.php'; ?>
 
     <?php include 'include/scripts.php'; ?>
 
-
+    <script src="<?= $ruta_raiz ?>view/admin/js/admin-home.js"></script>
 
 </body>
 

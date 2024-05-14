@@ -34,27 +34,20 @@ include '../../../config/global.php';
             <div class="mb-3">
                 <h5>Filtros de busqueda</h5>
             </div>
-            <div class="row">
-                <div class="col-sm-4">
+            <div class="row mb-4">
+                <div class="col-sm-6">
                     <div class="mb-3">
-                        <label class="form-label" for="">Clase</label>
-                        <select class="form-select" name="select-profesor">
+                        <label class="form-label" for="select-clase">Clase</label>
+                        <select class="form-select" name="select-clase" id="select-clase">
                             <option value="1">ISC-6A-2024</option>
                         </select>
                     </div>
                 </div>
-                <div class="col-sm-4">
+
+                <div class="col-sm-6">
                     <div class="mb-3">
-                        <label class="form-label" for="">Modalidad</label>
-                        <select class="form-select" name="select-profesor">
-                            <option value="1">Escolarizado</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="mb-3">
-                        <label class="form-label" for="">Fecha</label>
-                        <input class="form-control" value="" type="date">
+                        <label class="form-label" for="select-fecha">Fecha</label>
+                        <input class="form-control" value="" type="date" name="select-fecha" id="select-fecha">
                     </div>
                 </div>
             </div>
@@ -72,55 +65,35 @@ include '../../../config/global.php';
                 <a class="btn btn-danger fw-bold text-uppercase" href="">Generar PDF</a>
             </div>
 
-            <table class="table text-center">
-                <thead>
-                    <tr>
-                        <th>Clave</th>
-                        <th>Nombre del estudiante</th>
-                        <th>Asistencia</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Nombre Apellido Apellido 1</td>
-                        <td>Presente</td>
-                        <td>
-                            <a class="btn btn-primary fw-bold" href="">Editar</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Nombre Apellido Apellido 2</td>
-                        <td>No Presente</td>
-                        <td>
-                            <a class="btn btn-primary fw-bold" href="">Editar</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>. . .</td>
-                        <td>. . .</td>
-                        <td>Presente/No Presente/Retardo</td>
-                        <td>
-                            <a class="btn btn-primary fw-bold" href="">Editar</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>N</td>
-                        <td>Nombre Apellido Apellido N</td>
-                        <td>Presente/No Presente/Retardo</td>
-                        <td>
-                            <a class="btn btn-primary fw-bold" href="">Editar</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-sm text-center">
+                    <thead>
+                        <tr>
+                            <th>Matricula</th>
+                            <th>Nombre del estudiante</th>
+                            <th>Asistencia</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+
+                        <tr>
+                            <td>1</td>
+                            <td>Nombre Apellido Apellido 1</td>
+                            <td>Presente</td>
+                            <td>
+                                <a class="btn btn-sm btn-primary fw-bold" href="">Editar</a>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
 
         </div>
 
     </div>
-    
+
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

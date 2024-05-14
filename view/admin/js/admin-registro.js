@@ -24,8 +24,8 @@ $(document).ready(function () {
                                 <td>${element["rfc"]}</td>
                                 <td class="text-center">${(element["status"] == 1) ? '<span class="badge text-bg-success">Activo</span>' : '<span class="badge text-bg-danger">Inactivo</span>'}</td>
                                 <td class="text-center">
-                                    <button class="btn btn-primary btnEditar">Editar</button>
-                                    ${(element["status"] == 1) ? '<button class="btn btn-danger btnEliminar">Eliminar</button>' : '<button class="btn btn-success btnActivar">Activar</button>'}
+                                    <button class="btn btn-sm btn-primary btnEditar">Editar</button>
+                                    ${(element["status"] == 1) ? '<button class="btn btn-sm btn-danger btnEliminar">Eliminar</button>' : '<button class="btn btn-sm btn-success btnActivar">Activar</button>'}
                                 </td>
                             </tr>
                         `;

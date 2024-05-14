@@ -41,23 +41,18 @@ function loginProfesor() {
                         window.location.href = "view/user/user-profesor/"
                     }, 1000);
                 } else {
-
                     VanillaToasts.create({
                         title: respuesta.titulo,
                         text: respuesta.texto,
                         type: respuesta.tipo,
                         icon: respuesta.icon,
-                        timeout: 3000, // visible 3 segundos
+                        timeout: respuesta.tiempo, // visible 3 segundos
                     });
-
                 }
             }
 
         }
     });
-
-
-    
 
 }
 

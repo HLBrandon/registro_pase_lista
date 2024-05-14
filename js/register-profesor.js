@@ -68,11 +68,11 @@ $(document).ready(function () {
     //FUNCION PARA BORRAR CLASES DE LOS INPUT
     function resetearCampos() {
         // Restablecer campos de texto
-        $("#nombre_usuario, #apellido_pa, #apellido_ma, #telefono, #correo, #clave").removeClass('border-success is-valid border-danger is-invalid');
-        $("#nombre_usuario, #apellido_pa, #apellido_ma, #telefono, #correo, #clave").val('');
+        $("#nombre_usuario, #apellido_pa, #apellido_ma, #telefono, #correo, #clave, #rfc").removeClass('border-success is-valid border-danger is-invalid');
+        $("#nombre_usuario, #apellido_pa, #apellido_ma, #telefono, #correo, #clave, #rfc").val('');
         // Restablecer mensajes de alerta
-        $("#alert_nombre, #alerta_paterno, #alerta_materno, #alerta_telefono, #alerta_correo, #alerta_clave").html('');
-        $("#alert_nombre, #alerta_paterno, #alerta_materno, #alerta_telefono, #alerta_correo, #alerta_clave").removeClass('invalid-feedback');
+        $("#alert_nombre, #alerta_paterno, #alerta_materno, #alerta_telefono, #alerta_correo, #alerta_clave, #alerta_rfc").html('');
+        $("#alert_nombre, #alerta_paterno, #alerta_materno, #alerta_telefono, #alerta_correo, #alerta_clave, #alerta_rfc").removeClass('invalid-feedback');
     }
 
     $(document).on("submit", "#form__registro", function (e) {

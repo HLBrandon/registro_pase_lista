@@ -2,10 +2,10 @@
 
 include '../conexion.php';
 
-$sql = "SELECT cvePersona, nombre_persona, apellido_pa, apellido_ma FROM jefe_carrera
+$sql = "SELECT cveEncargar, cveCarrera, nombre_persona, apellido_pa, apellido_ma FROM encargar_carrera
+        NATURAL JOIN jefe_carrera
         NATURAL JOIN personal_escolar
-        NATURAL JOIN usuario
-        WHERE status != 0";
+        NATURAL JOIN usuario";
 
 $query = $conexion -> query($sql);
 
@@ -17,7 +17,8 @@ $arreglo = array();
 
 while ($row = $query -> fetch_object()) {
     $arreglo [] = array(
-        'cvePersona' => $row -> cvePersona,
+        'cveEncargar' => $row -> cveEncargar,
+        'cveCarrera' => $row -> cveCarrera,
         'nombre'     => $row -> nombre_persona . " " . $row -> apellido_pa . " " . $row -> apellido_ma
     );
 }
