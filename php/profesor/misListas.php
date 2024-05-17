@@ -1,11 +1,13 @@
 <?php
 
+include '../../config/global.php';
 include '../conexion.php';
 
 if (isset($_POST)) {
 
+    $respuesta = array();
+
     if (!empty($_POST["select-clase"]) and !empty($_POST["select-fecha"])) {
-        $respuesta = array();
 
         $sql = "SELECT asis.cveAsistencia, asis.cveImpa_Asig, es.matricula, nombre_persona, apellido_pa, apellido_ma, presente FROM asistencia asis
                 INNER JOIN detalle_asistencia da
@@ -44,9 +46,10 @@ if (isset($_POST)) {
     } else {
         $respuesta[] = array(
             "status" => false,
-            "icono" => "warning",
+            "tipo" => "warning",
             "titulo" => "CAMPOS VACIOS!!",
             "texto" => "Debes completar los filtros",
+            "icono" => $ruta_raiz . "plugins/toasts/icons/icon_warning.png"
         );
     }
 
