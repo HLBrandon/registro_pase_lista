@@ -31,6 +31,7 @@ if (isset($_POST)) {
                     if (password_verify($clave, $dato->contra)) {
 
                         if ($dato->status == 1) {
+                            
                             $sql = "UPDATE personal_escolar SET conectar = 1 WHERE cvePersona = $dato->cvePersona";
                             $update = $conexion->query($sql);
 
