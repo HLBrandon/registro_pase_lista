@@ -19,9 +19,27 @@
         <h1 class="h2">Áreas</h1>
     </div>
 
-    <div class="container-fluid">
+    <div class="container-fluid mb-4">
 
-        Cuerpo del contenido
+        <button class="btn btn-success mb-4 rounded-5 fw-bold text-uppercase" type="button" id="btnCrear">Crear</button>
+
+        <?php include 'modals/modal-area.php'; ?>
+
+        <div class="table-responsive small">
+            <table class="table table-sm table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nombre de Área</th>
+                        <th class="text-center">Estado</th>
+                        <th class="text-center">Acción</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider" id="cuerpo_tabla">
+
+                </tbody>
+            </table>
+        </div>
 
     </div>
 
@@ -29,7 +47,7 @@
 
     <?php include 'include/scripts.php'; ?>
 
-
+    <script src="<?= $ruta_raiz ?>view/admin/js/admin-area.js"></script>
 
 </body>
 
